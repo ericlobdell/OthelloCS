@@ -1,0 +1,191 @@
+﻿using OthelloCS.Models;
+using OthelloCS.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Xunit;
+
+namespace OthelloCS.Tests
+{
+    public class BoardManagerTests
+    {
+        [Theory]
+        [InlineData(-1,3,false)]
+        [InlineData( 1, 3, true )]
+        [InlineData( 1, 8, false )]
+        [InlineData( 8, 3, false )]
+        [InlineData( 1, -1, false )]
+        [InlineData( 4, 7, true )]
+        public void IsValidMove_false_if_off_gameboard( int row, int col, bool expected )
+        {
+            var sut = BoardManager.IsValidMove( row, col );
+
+            Assert.Equal( expected, sut );
+        }
+
+        [Fact]
+        public void TyrGetCell_returns_copy_of_Cell_if_valid_move()
+        {
+            var gameBoard = new Gameboard( );
+            var sut = BoardManager.TryGetCell( 2, 3, gameBoard );
+
+            var expected = gameBoard.Positions [ 2 ] [ 3 ];
+
+            Assert.Equal( expected.Row, sut.Row );
+            Assert.Equal( expected.Column, sut.Column );
+            Assert.NotSame( expected, sut );
+
+        }
+
+        [Fact]
+        public void TyrGetCell_returns_null_if_invalid_move( )
+        {
+            var gameBoard = new Gameboard( );
+            var sut = BoardManager.TryGetCell( -1, 3, gameBoard );
+
+            Assert.Null( sut );
+        }
+
+        [Fact]
+        public void GetFlatGameboard_returns_positions_as_flat_list()
+        {
+            var gameBoard = new Gameboard( );
+            var expected = new List<Cell>( );
+
+            gameBoard.Positions.ForEach( row =>
+            {
+                row.ForEach( cell => expected.Add( cell ) );
+            } );
+
+            var sut = BoardManager.GetFlatGameboard( gameBoard );
+
+            Assert.IsType<List<Cell>>( sut );
+            Assert.Equal( 64, sut.Count );
+        }
+
+        [Fact]
+        public void CopyCell_returns_copy_of_Cell()
+        {
+            var cell = new Cell
+            {
+                Row = 1,
+                Column = 2,
+                IsTarget = true,
+                IsHighestScoring = false, 
+                IsHit = true,
+                PointValue = 3,
+                Distance = 2,
+                PlayerNumber = 1
+                
+            };
+
+            var sut = BoardManager.CopyCell( cell );
+
+            Assert.NotSame( cell, sut );
+            Assert.Equal( sut.Row, cell.Row );
+            Assert.Equal( sut.Column, cell.Column );
+            Assert.Equal( sut.IsTarget, cell.IsTarget );
+            Assert.Equal( sut.IsHit, cell.IsHit );
+            Assert.Equal( sut.IsHighestScoring, cell.IsHighestScoring );
+            Assert.Equal( sut.PlayerNumber, cell.PlayerNumber );
+            Assert.Equal( sut.Distance, cell.Distance );
+            Assert.Equal( sut.PointValue, cell.PointValue );
+        }
+
+        [Fact]
+        public void GetFlatGameboard_returns_copies_of_Cells_not_references( )
+        {
+            var gameBoard = new Gameboard( );
+            var expected = new List<Cell>( );
+
+            gameBoard.Positions.ForEach( row =>
+            {
+                row.ForEach( cell => expected.Add( cell ) );
+            } );
+
+            var sut = BoardManager.GetFlatGameboard( gameBoard );
+
+            sut.ForEach( cell => 
+                Assert.NotSame( cell, gameBoard.Positions [ cell.Row ] [ cell.Column ] ) );
+        }
+
+        [Fact]
+        public void ResetTargetPositions_returns_new_gameboard_with_all_positions_as_not_target( )
+        {
+            var gameBoard = new Gameboard( );
+
+            var sut = BoardManager.ResetTargetPositions( gameBoard );
+
+            Assert.IsType<Gameboard>( sut );
+            Assert.NotSame( sut, gameBoard );
+            Assert.True( BoardManager.GetFlatGameboard( sut ).All( p => p.IsTarget == false ) );
+        }
+
+        [Fact]
+        public void ResetTargetPositions_doesnt_mutate_gameBoard_passed_in( )
+        {
+            var gameBoard = new Gameboard( );
+
+            var sut = BoardManager.ResetTargetPositions( gameBoard );
+
+            Assert.False( BoardManager.GetFlatGameboard( gameBoard ).All( p => p.IsTarget == false ) );
+        }
+
+        [Theory]
+        [InlineData(2,3,true)] // -1, 0 - above
+        [InlineData( 4, 3, true )] // +1, 0 - below
+        [InlineData( 2, 2, true )] // -1, -1 = above left
+        [InlineData( 4, 2, true )] // +1, -1 = below left
+        [InlineData( 2, 4, true )] // -1, +1 = above right
+        [InlineData( 4, 4, true )] // -1, -1 = below right
+        [InlineData( 3, 2, true )] // 0, -1 = left
+        [InlineData( 3, 4, true )] // 0, +1 = right
+        [InlineData( 3, 3, false )] // 0, 0 = actual
+        [InlineData( 5, 2, false )] // +2, -1 = OOB
+        [InlineData( 2, 5, false )] // -1, +2 = OOB
+        public void GetAdjacentCells_returns_list_of_surrounding_cells_from_gameboard( int row, int col, bool expected )
+        {
+            var gameBoard = new Gameboard( );
+            var testCell = gameBoard.Positions [ 3 ] [ 3 ];
+
+            var sut = BoardManager.GetAdjacentCells( gameBoard, testCell );
+
+            Assert.Equal( expected, sut.Any( c => c.Row == row && c.Column == col ) );
+        }
+
+        [Theory]
+        [InlineData( -1, 3, false )] // -1, 0 - above
+        [InlineData( 1, 3, true )] // +1, 0 - below
+        [InlineData( -1, 2, false )] // -1, -1 = above left
+        [InlineData( 1, 2, true )] // +1, -1 = below left
+        [InlineData( -1, 4, false )] // -1, +1 = above right
+        [InlineData( -1, 4, false )] // -1, -1 = below right
+        [InlineData( 0, 2, true )] // 0, -1 = left
+        [InlineData( 0, 4, true )] // 0, +1 = right
+        [InlineData( 0, 3, false )] // 0, 0 = actual
+        [InlineData( 2, 2, false )] // +2, -1 = OOB
+        [InlineData( -1, 5, false )] // -1, +2 = OOB
+        public void GetAdjacentCells_returns_only_valid_positions( int row, int col, bool expected )
+        {
+            var gameBoard = new Gameboard( );
+            var testCell = gameBoard.Positions [ 0 ] [ 3 ];
+
+            var sut = BoardManager.GetAdjacentCells( gameBoard, testCell );
+
+            Assert.Equal( expected, sut.Any( c => c.Row == row && c.Column == col ) );
+        }
+
+        [Fact]
+        public void GetOpenAdjacentCells_returns_only_unoccupied_cells()
+        {
+            var gameBoard = new Gameboard( );
+            var testCell = gameBoard.Positions [ 3 ] [ 3 ];
+
+            var sut = BoardManager.GetOpenAdjacentCells( gameBoard, testCell );
+
+            Assert.True( sut.All( cell => cell.PlayerNumber == 0 ) );
+        }
+    }
+}
