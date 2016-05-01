@@ -1,10 +1,7 @@
 ﻿using OthelloCS.Models;
 using OthelloCS.Services;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace OthelloCS.Tests
@@ -131,6 +128,26 @@ namespace OthelloCS.Tests
             var sut = BoardManager.ResetTargetPositions( gameBoard );
 
             Assert.False( BoardManager.GetFlatGameboard( gameBoard ).All( p => p.IsTarget == false ) );
+        }
+
+        [Fact]
+        public void ResetMoveRatings_sets_move_rating_properties_to_defaults( )
+        {
+            var gameBoard = new Gameboard( );
+            var cellWithValuesSet = new Cell { IsHighestScoring = true, IsHit = true, IsTarget = true };
+            gameBoard.Positions [ 1 ] [ 1 ] = cellWithValuesSet;
+
+            Assert.True( BoardManager.GetFlatGameboard( gameBoard ).Any( c => c.IsTarget ) );
+            Assert.True( BoardManager.GetFlatGameboard( gameBoard ).Any( c => c.IsHit ) );
+            Assert.True( BoardManager.GetFlatGameboard( gameBoard ).Any( c => c.IsHighestScoring ) );
+
+            var sut = BoardManager.ResetMoveRatings( gameBoard );
+
+
+            Assert.NotSame( gameBoard, sut );
+            Assert.False( BoardManager.GetFlatGameboard( sut ).Any( c => c.IsTarget ) );
+            Assert.False( BoardManager.GetFlatGameboard( sut ).Any( c => c.IsHit ) );
+            Assert.False( BoardManager.GetFlatGameboard( sut ).Any( c => c.IsHighestScoring ) );
         }
 
         [Theory]

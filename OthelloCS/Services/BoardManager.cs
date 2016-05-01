@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OthelloCS.Models;
 
 namespace OthelloCS.Services
@@ -27,22 +24,42 @@ namespace OthelloCS.Services
             var gameBoardCopy = new Gameboard( );
             gameBoard.Positions.ForEach( row =>
                 row.ForEach( cell => {
-                    var copy = CopyCell( cell );
-                    copy.IsTarget = false;
-                    gameBoardCopy.Positions [ cell.Row ] [ cell.Column ] = copy;
+
+                    if (cell.IsTarget)
+                    {
+                        var copy = CopyCell( cell );
+                        copy.IsTarget = false;
+                        gameBoardCopy.Positions [ cell.Row ] [ cell.Column ] = copy;
+                    }
+                    
                 } ) );
 
             return gameBoardCopy;
         }
 
+        public static Gameboard ResetMoveRatings( Gameboard gameBoard )
+        {
+            var newGameBoard = new Gameboard( );
+
+            BoardManager.GetFlatGameboard( gameBoard )
+                .ForEach( cell =>
+                {
+                    cell.IsHighestScoring = false;
+                    cell.IsHit = false;
+                    cell.IsTarget = false;
+
+                    newGameBoard.Positions [ cell.Row ] [ cell.Column ] = cell;
+                } );
+
+            return newGameBoard;
+        }
+
         public static List<Cell> GetFlatGameboard( Gameboard gameBoard )
         {
-            var positions = new List<Cell>( );
-
-            gameBoard.Positions.ForEach( row =>
-                row.ForEach( cell => positions.Add( CopyCell(cell) ) ) );
-
-            return positions;
+            return gameBoard.Positions
+                .SelectMany( row =>
+                    row.Select( CopyCell ) )
+                       .ToList();
         }
 
         public static Cell CopyCell( Cell cell )
@@ -51,7 +68,7 @@ namespace OthelloCS.Services
             {
                 Row = cell.Row,
                 Column = cell.Column,
-                IsTarget = cell.IsTarget,
+                IsTarget = cell.IsTarget, 
                 IsHit = cell.IsHit,
                 IsHighestScoring = cell.IsHighestScoring,
                 PlayerNumber = cell.PlayerNumber,
@@ -71,8 +88,7 @@ namespace OthelloCS.Services
             var belowLeft = TryGetCell( cell.Row + 1, cell.Column - 1, gameBoard );
             var belowRight = TryGetCell( cell.Row + 1, cell.Column + 1, gameBoard );
 
-            return new List<Cell> {
-                above, aboveLeft, aboveRight, left, right, below, belowLeft, belowRight }
+            return new [] { above, aboveLeft, aboveRight, left, right, below, belowLeft, belowRight }
                 .Where( c => c != null )
                 .ToList();
         }
