@@ -10,8 +10,5 @@
         public bool IsHighestScoring { get; set; }
         public int Distance { get; set; }
         public int PointValue { get; set; }
-
-
-
     }
 }

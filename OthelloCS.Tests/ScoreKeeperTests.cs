@@ -24,7 +24,7 @@ namespace OthelloCS.Tests
         public void GetHitDistance_returns_vertical_or_horizontal_distance_of_cell_from_move_position()
         {
             var gameBoard = new Gameboard( );
-            var move = new Move { Row = 1, Column = 1 };
+            var move = new Move (1, 1, 1);
 
             var sut = ScoreKeeper.GetHitDistance( move, 1, 3 );
             Assert.Equal( 2, sut );
@@ -194,6 +194,11 @@ namespace OthelloCS.Tests
             Assert.IsType<List<Cell>>( sut );
             Assert.Equal( 0, sut.Count );
         }
+
+        // MakeMove Tests
+
+
+
 
     }
 }

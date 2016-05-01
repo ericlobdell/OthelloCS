@@ -32,18 +32,22 @@ namespace OthelloCS.Services
             };
         }
 
-        public static List<Cell> GetMoveCaptures( int startingRow, int startingColumn, int playerNumber, Gameboard gameBoard )
+        public static Move MakeMove( int startingRow, int startingColumn, int playerNumber, Gameboard gameBoard )
         {
-            var captures = new List<Cell>( );
+            var move = new Move( startingRow, startingColumn, playerNumber );
+
             for ( int rowIncrement = -1; rowIncrement <= 1; rowIncrement++ )
+            {
                 for ( int columnIncerment = -1; columnIncerment <= 1; columnIncerment++ )
                 {
                     if ( rowIncrement == 0 && columnIncerment == 0 )
                         continue;
                     else
-                        captures.AddRange( GetDirectionalCaptures( startingRow + rowIncrement, startingColumn + columnIncerment, rowIncrement, columnIncerment, playerNumber, gameBoard ) );
+                        move.Captures.AddRange( GetDirectionalCaptures( startingRow + rowIncrement, startingColumn + columnIncerment, rowIncrement, columnIncerment, playerNumber, gameBoard ) );
                 }
-            return captures;
+            }
+
+            return move;
         }
 
         public static List<Cell> GetDirectionalCaptures(int row, int col, int rowIncrement, int columnIncrement, int playerNumber, Gameboard gameBoard)
@@ -72,6 +76,15 @@ namespace OthelloCS.Services
             };
 
             return GetCapturesRecursive( row, col );
+        }
+
+        public static Gameboard RecordMove(Move move)
+        {
+            var updetedGameBoard = new Gameboard( );
+
+
+
+            return updetedGameBoard;
         }
     }
 

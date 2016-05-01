@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using OthelloCS.Models;
 
@@ -22,16 +23,13 @@ namespace OthelloCS.Services
         public static Gameboard ResetTargetPositions( Gameboard gameBoard )
         {
             var gameBoardCopy = new Gameboard( );
+
             gameBoard.Positions.ForEach( row =>
                 row.ForEach( cell => {
+                    var copy = CopyCell( cell );
+                    copy.IsTarget = false;
 
-                    if (cell.IsTarget)
-                    {
-                        var copy = CopyCell( cell );
-                        copy.IsTarget = false;
-                        gameBoardCopy.Positions [ cell.Row ] [ cell.Column ] = copy;
-                    }
-                    
+                    gameBoardCopy.Positions [ cell.Row ] [ cell.Column ] = copy;
                 } ) );
 
             return gameBoardCopy;
@@ -41,7 +39,7 @@ namespace OthelloCS.Services
         {
             var newGameBoard = new Gameboard( );
 
-            BoardManager.GetFlatGameboard( gameBoard )
+            GetFlatGameboard( gameBoard )
                 .ForEach( cell =>
                 {
                     cell.IsHighestScoring = false;
@@ -52,6 +50,28 @@ namespace OthelloCS.Services
                 } );
 
             return newGameBoard;
+        }
+
+        private static Gameboard CopyGameboard( Gameboard gameBoard )
+        {
+            var gameBoardCopy = new Gameboard( );
+
+            GetFlatGameboard( gameBoard )
+                .ForEach( cell => gameBoardCopy.Positions [ cell.Row ] [ cell.Column ] = cell );
+
+            return gameBoardCopy;
+        }
+
+        public static Gameboard RecordMove( Move move, Gameboard gameBoard )
+        {
+            var gameBoardCopy = CopyGameboard( gameBoard );
+
+            gameBoardCopy.Positions [ move.Row ] [ move.Column ].PlayerNumber = move.PlayerNumber;
+
+            move.Captures.ForEach( cell =>
+                gameBoardCopy.Positions [ cell.Row ] [ cell.Column ].PlayerNumber = move.PlayerNumber );
+
+            return gameBoardCopy;
         }
 
         public static List<Cell> GetFlatGameboard( Gameboard gameBoard )
@@ -99,5 +119,7 @@ namespace OthelloCS.Services
                 .Where( c => c.PlayerNumber == 0 )
                 .ToList( );
         }
+
+        
     }
 }

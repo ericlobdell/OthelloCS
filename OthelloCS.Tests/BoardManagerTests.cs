@@ -204,5 +204,32 @@ namespace OthelloCS.Tests
 
             Assert.True( sut.All( cell => cell.PlayerNumber == 0 ) );
         }
+
+        [Fact]
+        public void RecordMove_maps_captured_positions_to_gameboard()
+        {
+            var gameBoard = new Gameboard( );
+            var currentPlayerNumber = 1;
+            var opponentPlayerNumber = 2;
+            var captures = new List<Cell>
+            {
+                new Cell { Row = 3, Column = 1, PlayerNumber = opponentPlayerNumber },
+                new Cell { Row = 3, Column = 2, PlayerNumber = opponentPlayerNumber }
+            };
+            var move = new Move( 3, 0, currentPlayerNumber );
+            move.Captures = captures;
+
+            Assert.NotEqual( gameBoard.Positions [ 3 ] [ 0 ].PlayerNumber, currentPlayerNumber );
+            Assert.NotEqual( gameBoard.Positions [ 3 ] [ 1 ].PlayerNumber, currentPlayerNumber );
+            Assert.NotEqual( gameBoard.Positions [ 3 ] [ 2 ].PlayerNumber, currentPlayerNumber );
+
+            var sut = BoardManager.RecordMove( move, gameBoard );
+
+            Assert.NotSame( sut, gameBoard );
+            Assert.Equal( sut.Positions [ 3 ] [ 0 ].PlayerNumber, currentPlayerNumber );
+            Assert.Equal( sut.Positions [ 3 ] [ 1 ].PlayerNumber, currentPlayerNumber );
+            Assert.Equal( sut.Positions [ 3 ] [ 2 ].PlayerNumber, currentPlayerNumber );
+
+        }
     }
 }
