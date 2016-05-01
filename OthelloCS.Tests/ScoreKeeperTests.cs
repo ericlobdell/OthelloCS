@@ -20,22 +20,7 @@ namespace OthelloCS.Tests
             Assert.Equal( sut, 3 );
         }
 
-        [Fact]
-        public void GetHitDistance_returns_vertical_or_horizontal_distance_of_cell_from_move_position()
-        {
-            var gameBoard = new Gameboard( );
-            var move = new Move (1, 1, 1);
-
-            var sut = ScoreKeeper.GetHitDistance( move, 1, 3 );
-            Assert.Equal( 2, sut );
-
-            var sut2 = ScoreKeeper.GetHitDistance( move, 4, 1 );
-            Assert.Equal( 3, sut2 );
-
-            var sut3 = ScoreKeeper.GetHitDistance( move, 4, 4 );
-            Assert.Equal( 3, sut2 );
-
-        }
+        
 
         [Fact]
         public void EvaluateCell_IsEmptyPosition_true_when_player_zero()
@@ -195,7 +180,41 @@ namespace OthelloCS.Tests
             Assert.Equal( 0, sut.Count );
         }
 
+        [Fact]
+        public void GetNextMovesForPlayer_returns_list_of_valid_next_moves()
+        {
+            var gameBoard = new Gameboard( );
+            var validMovesForPlayerOne = new List<Cell>
+            {
+                gameBoard.Positions[2][4],
+                gameBoard.Positions[3][5],
+                gameBoard.Positions[4][2],
+                gameBoard.Positions[5][3]
+            };
+
+            var sut = ScoreKeeper.GetNextMovesForPlayer( 1, gameBoard );
+
+            Assert.Equal( validMovesForPlayerOne.Count, sut.Count );
+            validMovesForPlayerOne.ForEach( cell =>
+            {
+                Assert.True( sut.Any( c => c.Row == cell.Row && c.Column == cell.Column ) );
+            } );
+        }
+
+
+        [Fact]
+        public void GetNextMovesForPlayer_should_mark_all_moves_as_target( )
+        {
+            var gameBoard = new Gameboard( );
+
+            var sut = ScoreKeeper.GetNextMovesForPlayer( 1, gameBoard );
+
+            Assert.True( sut.All( cell => cell.IsTarget ) );
+        }
+
         // MakeMove Tests
+
+
 
 
 

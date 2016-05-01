@@ -167,7 +167,7 @@ namespace OthelloCS.Tests
             var gameBoard = new Gameboard( );
             var testCell = gameBoard.Positions [ 3 ] [ 3 ];
 
-            var sut = BoardManager.GetAdjacentCells( gameBoard, testCell );
+            var sut = BoardManager.GetAdjacentCells( testCell, gameBoard );
 
             Assert.Equal( expected, sut.Any( c => c.Row == row && c.Column == col ) );
         }
@@ -189,7 +189,7 @@ namespace OthelloCS.Tests
             var gameBoard = new Gameboard( );
             var testCell = gameBoard.Positions [ 0 ] [ 3 ];
 
-            var sut = BoardManager.GetAdjacentCells( gameBoard, testCell );
+            var sut = BoardManager.GetAdjacentCells( testCell, gameBoard );
 
             Assert.Equal( expected, sut.Any( c => c.Row == row && c.Column == col ) );
         }
@@ -200,7 +200,7 @@ namespace OthelloCS.Tests
             var gameBoard = new Gameboard( );
             var testCell = gameBoard.Positions [ 3 ] [ 3 ];
 
-            var sut = BoardManager.GetOpenAdjacentCells( gameBoard, testCell );
+            var sut = BoardManager.GetOpenAdjacentCells( testCell, gameBoard );
 
             Assert.True( sut.All( cell => cell.PlayerNumber == 0 ) );
         }
@@ -229,6 +229,23 @@ namespace OthelloCS.Tests
             Assert.Equal( sut.Positions [ 3 ] [ 0 ].PlayerNumber, currentPlayerNumber );
             Assert.Equal( sut.Positions [ 3 ] [ 1 ].PlayerNumber, currentPlayerNumber );
             Assert.Equal( sut.Positions [ 3 ] [ 2 ].PlayerNumber, currentPlayerNumber );
+
+        }
+
+        [Fact]
+        public void GetPositionDistance_returns_vertical_or_horizontal_distance_of_cell_from_move_position( )
+        {
+            var gameBoard = new Gameboard( );
+            var move = new Move( 1, 1, 1 );
+
+            var sut = BoardManager.GetPositionDistance( move, 1, 3 );
+            Assert.Equal( 2, sut );
+
+            var sut2 = BoardManager.GetPositionDistance( move, 4, 1 );
+            Assert.Equal( 3, sut2 );
+
+            var sut3 = BoardManager.GetPositionDistance( move, 4, 4 );
+            Assert.Equal( 3, sut2 );
 
         }
     }

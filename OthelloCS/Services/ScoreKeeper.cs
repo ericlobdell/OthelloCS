@@ -11,16 +11,9 @@ namespace OthelloCS.Services
         {
             return BoardManager.GetFlatGameboard( gameBoard )
                 .Where( c => c.PlayerNumber == playerNumber )
-                .Count();
+                .Count( );
         }
 
-        public static int GetHitDistance( Move move, int row, int col )
-        {
-            var xDiff = Math.Abs( row - move.Row );
-            var yDiff = Math.Abs( col - move.Column);
-
-            return Math.Max( xDiff, yDiff );
-        }
 
         public static CellEvaluationResult EvaluateCell( Cell cell, int currentPlayerNumber )
         {
@@ -50,7 +43,7 @@ namespace OthelloCS.Services
             return move;
         }
 
-        public static List<Cell> GetDirectionalCaptures(int row, int col, int rowIncrement, int columnIncrement, int playerNumber, Gameboard gameBoard)
+        public static List<Cell> GetDirectionalCaptures( int row, int col, int rowIncrement, int columnIncrement, int playerNumber, Gameboard gameBoard )
         {
             Func<int, int, List<Cell>> GetCapturesRecursive = null;
             var captures = new List<Cell>( );
@@ -60,7 +53,7 @@ namespace OthelloCS.Services
                 var cell = BoardManager.TryGetCell( r, c, gameBoard );
                 var evaluationResult = EvaluateCell( cell, playerNumber );
 
-                if ( evaluationResult.IsEmptyPosition  || evaluationResult.IsInvalidPosition )
+                if ( evaluationResult.IsEmptyPosition || evaluationResult.IsInvalidPosition )
                 {
                     return new List<Cell>( );
                 }
@@ -78,13 +71,37 @@ namespace OthelloCS.Services
             return GetCapturesRecursive( row, col );
         }
 
-        public static Gameboard RecordMove(Move move)
+        public static List<Cell> GetNextMovesForPlayer( int playerNumber, Gameboard gameBoard )
         {
-            var updetedGameBoard = new Gameboard( );
+            var nextMoves = new List<Cell>( );
+            var highestScore = 0;
+            var opponent = playerNumber == 1 ? 2 : 1;
 
+            BoardManager.GetPlayerCells( opponent, gameBoard )
+                .ForEach( opponentCell =>
+                {
+                    BoardManager.GetOpenAdjacentCells( opponentCell, gameBoard )
+                        .ForEach( adjacentCell =>
+                        {
+                            var move = MakeMove( adjacentCell.Row, adjacentCell.Column, playerNumber, gameBoard );
 
+                            if ( move.IsScoringMove )
+                            {
+                                adjacentCell.IsTarget = true;
+                                adjacentCell.PointValue = move.PointValue;
+                                nextMoves.Add( adjacentCell );
+                            }
 
-            return updetedGameBoard;
+                            highestScore = move.PointValue > highestScore ? move.PointValue : highestScore;
+
+                        } );
+
+                } );
+
+            nextMoves.ForEach( cell =>
+                cell.IsHighestScoring = cell.PointValue == highestScore );
+
+            return nextMoves;
         }
     }
 

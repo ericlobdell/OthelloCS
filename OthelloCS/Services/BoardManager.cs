@@ -25,7 +25,8 @@ namespace OthelloCS.Services
             var gameBoardCopy = new Gameboard( );
 
             gameBoard.Positions.ForEach( row =>
-                row.ForEach( cell => {
+                row.ForEach( cell =>
+                {
                     var copy = CopyCell( cell );
                     copy.IsTarget = false;
 
@@ -57,9 +58,17 @@ namespace OthelloCS.Services
             var gameBoardCopy = new Gameboard( );
 
             GetFlatGameboard( gameBoard )
-                .ForEach( cell => gameBoardCopy.Positions [ cell.Row ] [ cell.Column ] = cell );
+                .ForEach( cell => gameBoardCopy.Positions [ cell.Row ] [ cell.Column ] = CopyCell( cell ) );
 
             return gameBoardCopy;
+        }
+
+        public static int GetPositionDistance( Move move, int row, int col )
+        {
+            var xDiff = Math.Abs( row - move.Row );
+            var yDiff = Math.Abs( col - move.Column );
+
+            return Math.Max( xDiff, yDiff );
         }
 
         public static Gameboard RecordMove( Move move, Gameboard gameBoard )
@@ -69,9 +78,22 @@ namespace OthelloCS.Services
             gameBoardCopy.Positions [ move.Row ] [ move.Column ].PlayerNumber = move.PlayerNumber;
 
             move.Captures.ForEach( cell =>
-                gameBoardCopy.Positions [ cell.Row ] [ cell.Column ].PlayerNumber = move.PlayerNumber );
+            {
+                cell.PlayerNumber = move.PlayerNumber;
+                cell.Distance = GetPositionDistance( move, cell.Row, cell.Column );
+                cell.IsHit = true;
+                gameBoardCopy.Positions [ cell.Row ] [ cell.Column ] = cell;
+
+            } );
 
             return gameBoardCopy;
+        }
+
+        public static List<Cell> GetPlayerCells( int playerNumber, Gameboard gameBoard )
+        {
+            return GetFlatGameboard( gameBoard )
+                .Where( c => c.PlayerNumber == playerNumber )
+                .ToList( );
         }
 
         public static List<Cell> GetFlatGameboard( Gameboard gameBoard )
@@ -79,7 +101,7 @@ namespace OthelloCS.Services
             return gameBoard.Positions
                 .SelectMany( row =>
                     row.Select( CopyCell ) )
-                       .ToList();
+                       .ToList( );
         }
 
         public static Cell CopyCell( Cell cell )
@@ -88,7 +110,7 @@ namespace OthelloCS.Services
             {
                 Row = cell.Row,
                 Column = cell.Column,
-                IsTarget = cell.IsTarget, 
+                IsTarget = cell.IsTarget,
                 IsHit = cell.IsHit,
                 IsHighestScoring = cell.IsHighestScoring,
                 PlayerNumber = cell.PlayerNumber,
@@ -97,7 +119,7 @@ namespace OthelloCS.Services
             };
         }
 
-        public static List<Cell> GetAdjacentCells( Gameboard gameBoard,  Cell cell )
+        public static List<Cell> GetAdjacentCells( Cell cell, Gameboard gameBoard )
         {
             var above = TryGetCell( cell.Row - 1, cell.Column, gameBoard );
             var aboveRight = TryGetCell( cell.Row - 1, cell.Column + 1, gameBoard );
@@ -110,16 +132,16 @@ namespace OthelloCS.Services
 
             return new [] { above, aboveLeft, aboveRight, left, right, below, belowLeft, belowRight }
                 .Where( c => c != null )
-                .ToList();
+                .ToList( );
         }
 
-        public static List<Cell> GetOpenAdjacentCells( Gameboard gameBoard, Cell cell )
+        public static List<Cell> GetOpenAdjacentCells( Cell cell, Gameboard gameBoard )
         {
-            return GetAdjacentCells( gameBoard, cell )
+            return GetAdjacentCells( cell, gameBoard )
                 .Where( c => c.PlayerNumber == 0 )
                 .ToList( );
         }
 
-        
+
     }
 }
