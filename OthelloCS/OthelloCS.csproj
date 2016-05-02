@@ -45,7 +45,10 @@
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\Gameboard.cs" />
     <Compile Include="Models\Move.cs" />
+    <Compile Include="Models\MoveResult.cs" />
+    <Compile Include="Models\SinglePlayerGameModeStrategy.cs" />
     <Compile Include="Services\BoardManager.cs" />
+    <Compile Include="Services\GameModeStrategyFactory.cs" />
     <Compile Include="Services\ScoreKeeper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

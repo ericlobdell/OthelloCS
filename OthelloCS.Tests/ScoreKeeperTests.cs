@@ -175,7 +175,6 @@ namespace OthelloCS.Tests
             Assert.Equal( 2, gameBoard.Positions [ startingRow ] [ startingColumn ].PlayerNumber );
             var sut = ScoreKeeper.GetDirectionalCaptures( startingRow, startingColumn, verticalSearchDirection, horizontalSearchDirection, playerNumber, gameBoard );
 
-
             Assert.IsType<List<Cell>>( sut );
             Assert.Equal( 0, sut.Count );
         }
@@ -201,7 +200,6 @@ namespace OthelloCS.Tests
             } );
         }
 
-
         [Fact]
         public void GetNextMovesForPlayer_should_mark_all_moves_as_target( )
         {
@@ -210,6 +208,48 @@ namespace OthelloCS.Tests
             var sut = ScoreKeeper.GetNextMovesForPlayer( 1, gameBoard );
 
             Assert.True( sut.All( cell => cell.IsTarget ) );
+        }
+
+        [Fact]
+        public void IsEndOfGame_returns_true_if_neither_player_has_another_move()
+        {
+            var gameBoard = new Gameboard( );
+            var allPositions = BoardManager.GetFlatGameboard( gameBoard );
+
+            allPositions.ForEach( cell =>
+            {
+                cell.PlayerNumber = 1;
+                cell.IsTarget = false;
+
+                gameBoard.Positions [ cell.Row ] [ cell.Column ] = cell;
+            } );
+
+            var playerOneMoves = ScoreKeeper.GetNextMovesForPlayer( 1, gameBoard );
+            var playerTwoMoves = ScoreKeeper.GetNextMovesForPlayer( 2, gameBoard );
+
+            Assert.Equal( 0, playerOneMoves.Count );
+            Assert.Equal( 0, playerTwoMoves.Count );
+
+            var sut = ScoreKeeper.IsEndOfGame( gameBoard );
+
+            Assert.True( sut );
+
+        }
+
+        [Fact]
+        public void IsEndOfGame_returns_false_if_either_player_has_another_move( )
+        {
+            var gameBoard = new Gameboard( );
+            var allPositions = BoardManager.GetFlatGameboard( gameBoard );
+            var playerOneMoves = ScoreKeeper.GetNextMovesForPlayer( 1, gameBoard );
+            var playerTwoMoves = ScoreKeeper.GetNextMovesForPlayer( 2, gameBoard );
+
+            Assert.True( playerOneMoves.Count > 0 || playerTwoMoves.Count > 0 );
+
+            var sut = ScoreKeeper.IsEndOfGame( gameBoard );
+
+            Assert.False( sut );
+
         }
 
         // MakeMove Tests

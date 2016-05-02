@@ -1,0 +1,60 @@
+﻿
+<div class="container-fluid shell">
+
+    <div class="row choose-game-mode-view">
+        <div class="col-sm-12">
+            <h3>Choose Game Mode</h3>
+            <ul class="list-inline">
+                <li><button class="btn btn-primary game-mode-button" data-game-mode="twoPlayer">Two Player</button> </li>
+                <li><button class="btn btn-primary game-mode-button" data-game-mode="singlePlayer">Single Player</button> </li>
+                <li><button class="btn btn-primary game-mode-button" data-game-mode="learning">Learning Mode</button> </li>
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="row game-view">
+        <div class="col-xs-12 demo-toolbar">
+
+            <div class="title col-xs-3">OthelloJS</div>
+
+            <div class="col-xs-9 view-options">
+                <label class="checkbox-inline">
+                    <input type="checkbox" class="show-move-marks" value=""> Show Move Marking
+                </label>
+
+                <label class="checkbox-inline">
+                    <input type="checkbox" class="show-logging" value=""> Show Decision Logging
+                </label>
+            </div>
+        </div>
+
+        <div class="row scoreboards-container">
+            <div class="col-xs-6 player-1 score-board">
+                <p>Player One: <span class="score"></span></p>
+
+            </div>
+            <div class="col-xs-6 player-2 score-board">
+                <p>Player Two: <span class="score"></span></p>
+
+            </div>
+        </div>
+
+        <div class="col-md-12 game-board-container">
+            <div class="game-board"></div>
+        </div>
+
+        <div class="col-sm-12 logging-container"></div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script>
+        $.get( "/api/othello/new", function ( response ) {
+            console.log( "SUCCESS: ", response );
+        } );
+    </script>
+}
+
+

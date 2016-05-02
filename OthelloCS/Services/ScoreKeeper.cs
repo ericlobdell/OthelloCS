@@ -103,6 +103,14 @@ namespace OthelloCS.Services
 
             return nextMoves;
         }
+
+        public static bool IsEndOfGame( Gameboard gameBoard )
+        {
+            var playerOneMoves = GetNextMovesForPlayer( 1, gameBoard );
+            var playerTwoMoves = GetNextMovesForPlayer( 2, gameBoard );
+
+            return playerOneMoves.Count == 0 && playerTwoMoves.Count == 0;
+        }
     }
 
     public class CellEvaluationResult
