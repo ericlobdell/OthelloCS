@@ -10,11 +10,15 @@ namespace OthelloCS.Models
     {
         public int CurrentPlayer { get; }
         public Gameboard Gameboard { get; }
+        public Guid MatchId { get; }
+        public List<Cell> Captures { get; }
 
-        public MoveResult( int playerNumber, Gameboard gameBoard )
+        public MoveResult( int player, Gameboard gameBoard, Guid matchId, List<Cell> captures )
         {
-            CurrentPlayer = playerNumber;
+            CurrentPlayer = player;
             Gameboard = gameBoard;
+            MatchId = matchId;
+            Captures = captures;
         }
     }
 }

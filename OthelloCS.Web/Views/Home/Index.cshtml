@@ -5,9 +5,9 @@
         <div class="col-sm-12">
             <h3>Choose Game Mode</h3>
             <ul class="list-inline">
-                <li><button class="btn btn-primary game-mode-button" data-game-mode="twoPlayer">Two Player</button> </li>
-                <li><button class="btn btn-primary game-mode-button" data-game-mode="singlePlayer">Single Player</button> </li>
-                <li><button class="btn btn-primary game-mode-button" data-game-mode="learning">Learning Mode</button> </li>
+                <li><button class="btn btn-primary game-mode-button" data-game-mode="0">Two Player</button> </li>
+                <li><button class="btn btn-primary game-mode-button" data-game-mode="1">Single Player</button> </li>
+                <li><button class="btn btn-primary game-mode-button" data-game-mode="2">Learning Mode</button> </li>
             </ul>
 
         </div>
@@ -50,10 +50,56 @@
 
 
 @section scripts {
+    <script src="~/App/js/ObservableEvent.js"></script>
+    <script src="~/App/js/othello.view.js"></script>
+    <script src="~/App/js/othello.js"></script>
+
     <script>
-        $.get( "/api/othello/new", function ( response ) {
-            console.log( "SUCCESS: ", response );
-        } );
+        var match = {
+            matchId: "",
+            currentPlayer: 1,
+            gameMode: 0,
+            gameBoard: {},
+            init: init,
+            onMove: handleOnMove
+        }
+
+        View.onGameModeSelect.subscribe( match.init );
+        View.onMove.subscribe( match.handleOnMove );
+
+        function init( mode ) {
+            $.get( `/api/othello/new/${mode}`, ( response ) => {
+                console.log( "SUCCESS: ", response );
+
+                match.matchId = response.MatchId;
+                match.gameMode = response.GameMode;
+                match.currentPlayer = response.CurrentPlayer;
+                match.gameBoard = response.Gameboard;
+
+                View.renderGameboard( response.Gameboard, [] );
+            } );
+        }
+
+        function handleOnMove( moveArgs ) {
+
+            var move = {
+                Row: moveArgs.Row,
+                Column: moveArgs.Column,
+                PlayerNumber: currentPlayer,
+                MatchId: match.matchId,
+                GameMode: match.gameMode,
+                Gameboard: match.gameBoard
+            };
+
+            $.post( "api/othello/match", move, ( response ) => {
+                console.log( "MOVE SUCCESS: ", response );
+
+                match.currentPlayer = response.CurrentPlayer;
+                match.gameBoard = response.Gameboard;
+
+                View.renderGameboard( response.Gameboard, response.Captures );
+            } );
+        }
     </script>
 }
 

@@ -36,7 +36,16 @@ namespace OthelloCS.Services
                     if ( rowIncrement == 0 && columnIncerment == 0 )
                         continue;
                     else
-                        move.Captures.AddRange( GetDirectionalCaptures( startingRow + rowIncrement, startingColumn + columnIncerment, rowIncrement, columnIncerment, playerNumber, gameBoard ) );
+                        move.Captures.AddRange( 
+                            GetDirectionalCaptures( 
+                                startingRow + rowIncrement,
+                                startingColumn + columnIncerment, 
+                                rowIncrement, 
+                                columnIncerment, 
+                                playerNumber, 
+                                gameBoard 
+                            ) 
+                        );
                 }
             }
 

@@ -7,18 +7,19 @@ using System.Threading.Tasks;
 
 namespace OthelloCS.Models
 {
-    public class SinglePlayerGameModeStrategy : IGameModeStrategy
+    public class TwoPlayerGameModeStrategy : IGameModeStrategy
     {
-
         public void HandleEndOfGame( )
         {
             throw new NotImplementedException( );
         }
 
+
+
         public MoveResult OnMoveCompleted( Move move, Gameboard gameBoard, Guid matchId, List<Cell> captures )
         {
-
-            throw new NotImplementedException( );
+            var nextPlayer = move.PlayerNumber == 1 ? 2 : 1;
+            return new MoveResult( nextPlayer, gameBoard, matchId, captures );
         }
     }
 }

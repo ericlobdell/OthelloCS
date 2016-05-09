@@ -47,6 +47,7 @@
     <Compile Include="Models\Move.cs" />
     <Compile Include="Models\MoveResult.cs" />
     <Compile Include="Models\SinglePlayerGameModeStrategy.cs" />
+    <Compile Include="Models\TwoPlayerGameModeStrategy.cs" />
     <Compile Include="Services\BoardManager.cs" />
     <Compile Include="Services\GameModeStrategyFactory.cs" />
     <Compile Include="Services\ScoreKeeper.cs" />
