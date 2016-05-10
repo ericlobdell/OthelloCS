@@ -13,9 +13,9 @@ namespace OthelloCS.Web.Controllers
     public class OthelloController : ApiController
     {
         [Route("api/othello/new/{mode:int}")]
-        public MatchResponse Get( GameMode mode = GameMode.OnePlayer )
+        public NewMatchResponse Get( GameMode mode = GameMode.OnePlayer )
         {
-            return new MatchResponse
+            return new NewMatchResponse
             {
                 Gameboard = new Gameboard( ),
                 MatchId = Guid.NewGuid( ),
@@ -29,16 +29,9 @@ namespace OthelloCS.Web.Controllers
         public MoveResult RecordMove( MatchAction action )
         {
             var strategy = ResolveGameModeStrategy( action.GameMode );
-            var move = ScoreKeeper.MakeMove( action.Row, action.Column, action.PlayerNumber, action.Gameboard );
-            var gb = BoardManager.RecordMove( move, action.Gameboard );
-
-            var moveResult = strategy.OnMoveCompleted( move, gb, action.MatchId, move.Captures );
-
-            var nextMoves = ScoreKeeper.GetNextMovesForPlayer( moveResult.CurrentPlayer, gb );
-            moveResult.Gameboard = BoardManager.MapNextMoves( nextMoves, gb );
+            var moveResult = strategy.OnMove( action );
 
             return moveResult;
-
         }
 
         private IGameModeStrategy ResolveGameModeStrategy( GameMode gameMode )
@@ -60,7 +53,7 @@ namespace OthelloCS.Web.Controllers
         PlayerTwo = 2
     }
 
-    public class MatchResponse
+    public class NewMatchResponse
     {
         public Player CurrentPlayer { get; set; }
         public Gameboard Gameboard { get; set; }
@@ -68,15 +61,6 @@ namespace OthelloCS.Web.Controllers
         public GameMode GameMode { get; set; }
     }
 
-    public class MatchAction
-    {
-        public int Row { get; set; }
-        public int Column { get; set; }
-        public int PlayerNumber { get; set; }
-        public Gameboard Gameboard { get; set; }
-        public Guid MatchId { get; set; }
-        public GameMode GameMode { get; set; }
-
-    }
+    
 
 }

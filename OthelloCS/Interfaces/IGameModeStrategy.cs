@@ -7,6 +7,6 @@ namespace OthelloCS.Interfaces
     public interface IGameModeStrategy
     {
         void HandleEndOfGame( );
-        MoveResult OnMoveCompleted( Move move, Gameboard gameBoard, Guid matchId, List<Cell> captures );
+        MoveResult OnMove( MatchAction action );
     }
 }

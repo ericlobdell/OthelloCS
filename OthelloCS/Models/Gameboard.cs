@@ -5,11 +5,41 @@ namespace OthelloCS.Models
     public class Gameboard
     {
 
-        public List< List<Cell>> Positions { get; set; }
+        public List<List<Cell>> Positions { get; set; }
 
         public Gameboard( )
         {
             Positions = GetInitialGameboard( );
+        }
+
+        private Gameboard( List<List<Cell>> positions )
+        {
+            Positions = positions;
+        }
+
+        public static Gameboard Empty
+        {
+            get
+            {
+                var positions = new List<List<Cell>>( );
+                List<Cell> cells;
+                for ( int row = 0; row < 8; row++ )
+                {
+                    cells = new List<Cell>( );
+                    for ( int col = 0; col < 8; col++ )
+                    {
+                        cells.Add( new Cell
+                        {
+                            Row = row,
+                            Column = col
+                        } );
+                    }
+                    positions.Add( cells );
+                }
+
+                return new Gameboard( positions );
+            }
+
         }
 
         private List<List<Cell>> GetInitialGameboard( )
@@ -58,5 +88,5 @@ namespace OthelloCS.Models
 
     }
 
-    
+
 }

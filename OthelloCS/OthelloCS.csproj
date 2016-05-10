@@ -41,9 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IGameModeStrategy.cs" />
+    <Compile Include="Models\BaseGameModeStrategy.cs" />
     <Compile Include="Models\Cell.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\Gameboard.cs" />
+    <Compile Include="Models\MatchAction.cs" />
     <Compile Include="Models\Move.cs" />
     <Compile Include="Models\MoveResult.cs" />
     <Compile Include="Models\SinglePlayerGameModeStrategy.cs" />

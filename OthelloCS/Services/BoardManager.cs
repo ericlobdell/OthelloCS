@@ -22,7 +22,7 @@ namespace OthelloCS.Services
 
         public static Gameboard ResetTargetPositions( Gameboard gameBoard )
         {
-            var gameBoardCopy = new Gameboard( );
+            var gameBoardCopy = Gameboard.Empty;
 
             gameBoard.Positions.ForEach( row =>
                 row.ForEach( cell =>
@@ -38,7 +38,7 @@ namespace OthelloCS.Services
 
         public static Gameboard ResetMoveRatings( Gameboard gameBoard )
         {
-            var gameBoardCopy = new Gameboard( );
+            var gameBoardCopy = Gameboard.Empty;
 
             GetFlatGameboard( gameBoard )
                 .ForEach( cell =>
@@ -55,7 +55,7 @@ namespace OthelloCS.Services
 
         private static Gameboard CopyGameboard( Gameboard gameBoard )
         {
-            var gameBoardCopy = new Gameboard( );
+            var gameBoardCopy = Gameboard.Empty;
 
             GetFlatGameboard( gameBoard )
                 .ForEach( cell => gameBoardCopy.Positions [ cell.Row ] [ cell.Column ] = CopyCell( cell ) );
