@@ -9,7 +9,7 @@ namespace OthelloCS.Services
     {
         public static bool IsValidMove( int row, int col )
         {
-            return ( row > -1 && row < 8 && col > -1 && col < 8 ); 
+            return ( row > -1 && row < 8 && col > -1 && col < 8 );
         }
 
         public static Cell TryGetCell( int row, int col, Gameboard gameBoard )
@@ -87,6 +87,16 @@ namespace OthelloCS.Services
             } );
 
             return gameBoardCopy;
+        }
+
+        public static Gameboard MapNextMoves( List<Cell> moves, Gameboard gameBoard )
+        {
+            var resetGameBoard = ResetMoveRatings( gameBoard );
+
+            moves.ForEach( move =>
+                resetGameBoard.Positions [ move.Row ] [ move.Column ] = move );
+
+            return resetGameBoard;
         }
 
         public static List<Cell> GetPlayerCells( int playerNumber, Gameboard gameBoard )

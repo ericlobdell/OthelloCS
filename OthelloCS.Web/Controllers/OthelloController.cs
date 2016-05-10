@@ -34,6 +34,9 @@ namespace OthelloCS.Web.Controllers
 
             var moveResult = strategy.OnMoveCompleted( move, gb, action.MatchId, move.Captures );
 
+            var nextMoves = ScoreKeeper.GetNextMovesForPlayer( moveResult.CurrentPlayer, gb );
+            moveResult.Gameboard = BoardManager.MapNextMoves( nextMoves, gb );
+
             return moveResult;
 
         }

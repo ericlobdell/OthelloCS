@@ -65,7 +65,7 @@
         }
 
         View.onGameModeSelect.subscribe( match.init );
-        View.onMove.subscribe( match.handleOnMove );
+        View.onMove.subscribe( match.onMove );
 
         function init( mode ) {
             $.get( `/api/othello/new/${mode}`, ( response ) => {
@@ -85,7 +85,7 @@
             var move = {
                 Row: moveArgs.Row,
                 Column: moveArgs.Column,
-                PlayerNumber: currentPlayer,
+                PlayerNumber: match.currentPlayer,
                 MatchId: match.matchId,
                 GameMode: match.gameMode,
                 Gameboard: match.gameBoard
