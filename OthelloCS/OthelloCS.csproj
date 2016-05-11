@@ -45,9 +45,13 @@
     <Compile Include="Models\Cell.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\Gameboard.cs" />
-    <Compile Include="Models\MatchAction.cs" />
     <Compile Include="Models\Move.cs" />
+    <Compile Include="Models\MoveRequest.cs" />
+    <Compile Include="Models\MoveResponse.cs" />
     <Compile Include="Models\MoveResult.cs" />
+    <Compile Include="Models\NewMatchRequest.cs" />
+    <Compile Include="Models\NewMatchResponse.cs" />
+    <Compile Include="Models\Player.cs" />
     <Compile Include="Models\SinglePlayerGameModeStrategy.cs" />
     <Compile Include="Models\TwoPlayerGameModeStrategy.cs" />
     <Compile Include="Services\BoardManager.cs" />

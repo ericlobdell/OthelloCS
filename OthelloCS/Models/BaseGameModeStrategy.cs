@@ -1,16 +1,10 @@
-﻿using OthelloCS.Interfaces;
-using OthelloCS.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OthelloCS.Services;
 
 namespace OthelloCS.Models
 {
     public class BaseGameModeStrategy
     {
-        public MoveResult GetMoveResult( MatchAction action, int nextPlayer)
+        public MoveResult GetMoveResult( MoveRequest action, int nextPlayer)
         {
             var move = ScoreKeeper.MakeMove( action.Row, action.Column, action.PlayerNumber, action.Gameboard );
             var gb = BoardManager.RecordMove( move, action.Gameboard );

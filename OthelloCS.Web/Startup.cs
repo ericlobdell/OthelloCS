@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Owin;
+﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartup(typeof(OthelloCS.Web.Startup))]
+[assembly: OwinStartup( typeof( OthelloCS.Web.Startup ) )]
 
 namespace OthelloCS.Web
 {

@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OthelloCS.Models
 {
-    public class MatchAction
+    public class MoveRequest
     {
         public int Row { get; set; }
         public int Column { get; set; }
@@ -14,6 +11,7 @@ namespace OthelloCS.Models
         public Gameboard Gameboard { get; set; }
         public Guid MatchId { get; set; }
         public GameMode GameMode { get; set; }
+        public List<Player> Players { get; set; }
 
     }
 }

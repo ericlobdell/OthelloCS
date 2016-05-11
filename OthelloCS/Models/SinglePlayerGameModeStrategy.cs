@@ -1,9 +1,5 @@
 ﻿using OthelloCS.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OthelloCS.Models
 {
@@ -15,7 +11,7 @@ namespace OthelloCS.Models
             throw new NotImplementedException( );
         }
 
-        public MoveResult OnMove( MatchAction action )
+        public MoveResult OnMove( MoveRequest action )
         {
             throw new NotImplementedException( );
         }

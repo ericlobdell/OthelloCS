@@ -53,7 +53,7 @@ var View = new (function () {
         });
         $(".game-board").html(html);
         opponentCaptures
-            .map(function (c) { return c.distance; })
+            .map(function (c) { return c.Distance; })
             .filter(function (d, i, uniqueDistances) { return uniqueDistances.indexOf(d) === i; })
             .sort(function (d1, d2) { return d1 - d2; })
             .forEach(function (d, i) {
@@ -65,11 +65,11 @@ var View = new (function () {
     };
     view.prototype.updateScoreBoards = function (players, currentPlayer) {
         players.forEach(function (player) {
-            var $playerSoreBoard = $(".score-board.player-" + player.number);
+            var $playerSoreBoard = $(".score-board.player-" + player.Number);
             $playerSoreBoard
                 .find(".score")
-                .html(player.score.toString());
-            if (player.number === currentPlayer)
+                .html(player.Score);
+            if (player.Number === currentPlayer)
                 $playerSoreBoard
                     .addClass("active");
             else

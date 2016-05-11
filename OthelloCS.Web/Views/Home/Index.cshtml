@@ -60,6 +60,7 @@
             currentPlayer: 1,
             gameMode: 0,
             gameBoard: {},
+            players: [],
             init: init,
             onMove: handleOnMove
         }
@@ -68,36 +69,63 @@
         View.onMove.subscribe( match.onMove );
 
         function init( mode ) {
-            $.get( `/api/othello/new/${mode}`, ( response ) => {
-                console.log( "SUCCESS: ", response );
 
-                match.matchId = response.MatchId;
-                match.gameMode = response.GameMode;
-                match.currentPlayer = response.CurrentPlayer;
-                match.gameBoard = response.Gameboard;
+            var newMatchRequest = {
+                PlayerOneName: "Eric",
+                PlayerTwoName: "Santa",
+                GameMode: mode
+            };
 
-                View.renderGameboard( response.Gameboard, [] );
-            } );
+            post( "/api/othello/new", newMatchRequest )
+                .then(( response ) => {
+                    console.log( "SUCCESS: ", response );
+
+                    match.matchId = response.MatchId;
+                    match.gameMode = response.GameMode;
+                    match.currentPlayer = response.CurrentPlayer;
+                    match.gameBoard = response.Gameboard;
+                    match.players = response.Players
+
+                    View.updateScoreBoards( response.Players, response.CurrentPlayer );
+                    View.renderGameboard( response.Gameboard, [] );
+                } );
         }
 
         function handleOnMove( moveArgs ) {
 
-            var move = {
+            var moveRequest = {
                 Row: moveArgs.Row,
                 Column: moveArgs.Column,
                 PlayerNumber: match.currentPlayer,
                 MatchId: match.matchId,
                 GameMode: match.gameMode,
-                Gameboard: match.gameBoard
+                Gameboard: match.gameBoard,
+                Players: match.players
             };
 
-            $.post( "api/othello/match", move, ( response ) => {
-                console.log( "MOVE SUCCESS: ", response );
+            post( "/api/othello/move", moveRequest )
+                .then(( response ) => {
+                    console.log( "MOVE SUCCESS: ", response );
 
-                match.currentPlayer = response.CurrentPlayer;
-                match.gameBoard = response.Gameboard;
+                    if ( response.IsEndOfGame ) {
 
-                View.renderGameboard( response.Gameboard, response.Captures );
+                    }
+                    else {
+                        match.currentPlayer = response.Result.CurrentPlayer;
+                        match.gameBoard = response.Result.Gameboard;
+
+                        View.updateScoreBoards( response.Players, response.Result.CurrentPlayer );
+                        View.renderGameboard( response.Result.Gameboard, response.Result.Captures );
+                    }
+                } );
+        }
+
+        function post( url, data ) {
+            return $.ajax( {
+                type: 'POST',
+                url: url,
+                data: JSON.stringify( data ),
+                contentType: 'application/json'
             } );
         }
     </script>

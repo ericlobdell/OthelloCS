@@ -84,7 +84,7 @@ const View = new class view {
         $( ".game-board" ).html( html );
 
         opponentCaptures
-            .map( c => c.distance )
+            .map( c => c.Distance )
             .filter(( d, i, uniqueDistances ) => uniqueDistances.indexOf( d ) === i )
             .sort(( d1, d2 ) => d1 - d2 )
             .forEach(( d, i ) => {
@@ -97,13 +97,13 @@ const View = new class view {
 
     updateScoreBoards( players, currentPlayer ) {
         players.forEach( player => {
-            const $playerSoreBoard = $( `.score-board.player-${player.number}` );
+            const $playerSoreBoard = $( `.score-board.player-${player.Number}` );
 
             $playerSoreBoard
                 .find( ".score" )
-                .html( player.score.toString() );
+                .html( player.Score );
 
-            if ( player.number === currentPlayer )
+            if ( player.Number === currentPlayer )
                 $playerSoreBoard
                     .addClass( "active" );
             else
