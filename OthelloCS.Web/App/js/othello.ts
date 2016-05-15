@@ -8,8 +8,7 @@
         View.onMove.subscribe( this.handleOnMove );
     }
 
-
-    public init = ( mode ) => {
+    public init = ( mode: number ) => {
 
         const newMatchRequest = {
             PlayerOneName: "Eric",
@@ -32,7 +31,7 @@
             });
     }
 
-    public handleOnMove = ( moveArgs ) => {
+    public handleOnMove = ( moveArgs: IMoveArguments ) => {
 
         const moveRequest = {
             Row: moveArgs.Row,

@@ -34,6 +34,12 @@ interface INewMatchResponse {
     GameMode: number
 }
 
+interface IMoveArguments {
+    Row: number,
+    Column: number,
+    IsHighScoring: boolean
+}
+
 interface IMoveRequest {
     Row: number,
     Column: number,
