@@ -4,11 +4,11 @@
     constructor() {
         this.match = new Match();
 
-        View.onGameModeSelect.subscribe( this.init );
-        View.onMove.subscribe( this.handleOnMove );
+        View.onGameModeSelect.subscribe( this.onGameModeSelect );
+        View.onMove.subscribe( this.onMove );
     }
 
-    public init = ( mode: number ) => {
+    public onGameModeSelect = ( mode: number ) => {
 
         const newMatchRequest = {
             PlayerOneName: "Eric",
@@ -18,7 +18,6 @@
 
         Service.getNewMatch( newMatchRequest )
             .then(( response: INewMatchResponse ) => {
-                console.log( "SUCCESS: ", response );
 
                 this.match.MatchId = response.MatchId;
                 this.match.GameMode = response.GameMode;
@@ -31,7 +30,7 @@
             });
     }
 
-    public handleOnMove = ( moveArgs: IMoveArguments ) => {
+    public onMove = ( moveArgs: IMoveArguments ) => {
 
         const moveRequest = {
             Row: moveArgs.Row,
@@ -48,7 +47,7 @@
                 console.log( "MOVE SUCCESS: ", response );
 
                 if ( response.IsEndOfGame ) {
-                    View.announceWinner(response.Winner)
+                    View.announceWinner( response.Winner )
                 }
                 else {
                     this.match.CurrentPlayer = response.Result.CurrentPlayer;
@@ -59,8 +58,5 @@
                 }
             });
     }
-
-    
-
 }
 

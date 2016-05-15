@@ -1,7 +1,7 @@
 var Othello = new (function () {
     function othello() {
         var _this = this;
-        this.init = function (mode) {
+        this.onGameModeSelect = function (mode) {
             var newMatchRequest = {
                 PlayerOneName: "Eric",
                 PlayerTwoName: "Santa",
@@ -9,7 +9,6 @@ var Othello = new (function () {
             };
             Service.getNewMatch(newMatchRequest)
                 .then(function (response) {
-                console.log("SUCCESS: ", response);
                 _this.match.MatchId = response.MatchId;
                 _this.match.GameMode = response.GameMode;
                 _this.match.CurrentPlayer = response.CurrentPlayer;
@@ -19,7 +18,7 @@ var Othello = new (function () {
                 View.renderGameboard(response.Gameboard, []);
             });
         };
-        this.handleOnMove = function (moveArgs) {
+        this.onMove = function (moveArgs) {
             var moveRequest = {
                 Row: moveArgs.Row,
                 Column: moveArgs.Column,
@@ -44,8 +43,8 @@ var Othello = new (function () {
             });
         };
         this.match = new Match();
-        View.onGameModeSelect.subscribe(this.init);
-        View.onMove.subscribe(this.handleOnMove);
+        View.onGameModeSelect.subscribe(this.onGameModeSelect);
+        View.onMove.subscribe(this.onMove);
     }
     return othello;
 }());

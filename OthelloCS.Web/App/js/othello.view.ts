@@ -104,6 +104,10 @@ const View = new class view {
                 .find( ".score" )
                 .html( player.Score.toString() );
 
+            $playerScoreBoard
+                .find( ".name" )
+                .html( player.Name );
+
             if ( player.Number === currentPlayer )
                 $playerScoreBoard
                     .addClass( "active" );

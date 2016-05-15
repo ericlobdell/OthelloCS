@@ -60,13 +60,13 @@ namespace OthelloCS.Services
             GetCapturesRecursive = ( r, c ) =>
             {
                 var cell = BoardManager.TryGetCell( r, c, gameBoard );
-                var evaluationResult = EvaluateCell( cell, playerNumber );
+                var evaluation = EvaluateCell( cell, playerNumber );
 
-                if ( evaluationResult.IsEmptyPosition || evaluationResult.IsInvalidPosition )
+                if ( evaluation.IsEmptyPosition || evaluation.IsInvalidPosition )
                 {
                     return new List<Cell>( );
                 }
-                else if ( evaluationResult.IsOpponentPosition )
+                else if ( evaluation.IsOpponentPosition )
                 {
                     captures.Add( cell );
                     return GetCapturesRecursive( r + rowIncrement, c + columnIncrement );
