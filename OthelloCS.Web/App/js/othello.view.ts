@@ -62,24 +62,25 @@ const View = new class view {
 
     }
 
-    renderGameboard( gameBoard, opponentCaptures ) {
+    renderGameboard( gameBoard: IGameboard, opponentCaptures: ICell[] ) {
         let html = "";
 
-        gameBoard.Positions.forEach( row => {
-            row.forEach( cell => {
+        gameBoard.Positions
+            .forEach( row => {
+                row.forEach( cell => {
 
-                const cellContents = cell.PlayerNumber ?
-                    `<div class='player-game-piece'></div>` : '';
+                    const cellContents = cell.PlayerNumber ?
+                        `<div class='player-game-piece'></div>` : '';
 
-                html += `<div class='cell'
+                    html += `<div class='cell'
                               data-distance="${cell.Distance}"
                               data-is-target="${cell.IsTarget}"
                               data-is-highest-scoring="${cell.IsHighestScoring}"
                               data-player-num="${cell.PlayerNumber}"
                               data-row-num='${cell.Row}'
                               data-col-num='${cell.Column}'>${cellContents}</div>`;
+                });
             });
-        });
 
         $( ".game-board" ).html( html );
 
@@ -95,36 +96,36 @@ const View = new class view {
             });
     }
 
-    updateScoreBoards( players, currentPlayer ) {
+    updateScoreBoards( players: IPlayer[], currentPlayer: number ) {
         players.forEach( player => {
-            const $playerSoreBoard = $( `.score-board.player-${player.Number}` );
+            const $playerScoreBoard = $( `.score-board.player-${player.Number}` );
 
-            $playerSoreBoard
+            $playerScoreBoard
                 .find( ".score" )
-                .html( player.Score );
+                .html( player.Score.toString() );
 
             if ( player.Number === currentPlayer )
-                $playerSoreBoard
+                $playerScoreBoard
                     .addClass( "active" );
             else
-                $playerSoreBoard
+                $playerScoreBoard
                     .removeClass( "active" );
 
         });
     }
 
-    announceWinner( winner ) {
+    announceWinner( winner: IPlayer ) {
         let $winningScoreBoard;
 
         if ( winner )
-            $winningScoreBoard = $( `.score-board.player-${winner}` );
+            $winningScoreBoard = $( `.score-board.player-${winner.Number}` );
         else
             $winningScoreBoard = $( `.score-board` );
 
         $winningScoreBoard.addClass( "active animated tada" );
     }
 
-    updateLogging( entry ) {
+    updateLogging( entry: string ) {
         const $log = $( ".logging-container" );
 
         $log.append( entry );

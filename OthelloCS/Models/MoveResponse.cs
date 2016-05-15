@@ -7,6 +7,7 @@ namespace OthelloCS.Models
         public MoveResult Result { get; set; }
         public List<Player> Players { get; set; }
         public bool IsEndOfGame { get; set; }
+        public Player Winner { get; set; }
 
         public MoveResponse( )
         {

@@ -82,8 +82,8 @@ namespace OthelloCS.Services
 
         public static List<Cell> GetNextMovesForPlayer( int playerNumber, Gameboard gameBoard )
         {
-            var nextMoves = new List<Cell>( );
-            var highestScore = 0;
+            var potentialNextMoves = new List<Cell>( );
+            var highestScoringMove = 0;
             var opponent = playerNumber == 1 ? 2 : 1;
 
             BoardManager.GetPlayerCells( opponent, gameBoard )
@@ -98,19 +98,19 @@ namespace OthelloCS.Services
                             {
                                 adjacentCell.IsTarget = true;
                                 adjacentCell.PointValue = move.PointValue;
-                                nextMoves.Add( adjacentCell );
+                                potentialNextMoves.Add( adjacentCell );
                             }
 
-                            highestScore = move.PointValue > highestScore ? move.PointValue : highestScore;
+                            highestScoringMove = move.PointValue > highestScoringMove ? move.PointValue : highestScoringMove;
 
                         } );
 
                 } );
 
-            nextMoves.ForEach( cell =>
-                cell.IsHighestScoring = cell.PointValue == highestScore );
+            potentialNextMoves.ForEach( position =>
+                position.IsHighestScoring = position.PointValue == highestScoringMove );
 
-            return nextMoves;
+            return potentialNextMoves;
         }
 
         public static bool IsEndOfGame( Gameboard gameBoard )

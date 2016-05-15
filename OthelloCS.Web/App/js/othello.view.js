@@ -44,7 +44,8 @@ var View = new (function () {
     }
     view.prototype.renderGameboard = function (gameBoard, opponentCaptures) {
         var html = "";
-        gameBoard.Positions.forEach(function (row) {
+        gameBoard.Positions
+            .forEach(function (row) {
             row.forEach(function (cell) {
                 var cellContents = cell.PlayerNumber ?
                     "<div class='player-game-piece'></div>" : '';
@@ -65,22 +66,22 @@ var View = new (function () {
     };
     view.prototype.updateScoreBoards = function (players, currentPlayer) {
         players.forEach(function (player) {
-            var $playerSoreBoard = $(".score-board.player-" + player.Number);
-            $playerSoreBoard
+            var $playerScoreBoard = $(".score-board.player-" + player.Number);
+            $playerScoreBoard
                 .find(".score")
-                .html(player.Score);
+                .html(player.Score.toString());
             if (player.Number === currentPlayer)
-                $playerSoreBoard
+                $playerScoreBoard
                     .addClass("active");
             else
-                $playerSoreBoard
+                $playerScoreBoard
                     .removeClass("active");
         });
     };
     view.prototype.announceWinner = function (winner) {
         var $winningScoreBoard;
         if (winner)
-            $winningScoreBoard = $(".score-board.player-" + winner);
+            $winningScoreBoard = $(".score-board.player-" + winner.Number);
         else
             $winningScoreBoard = $(".score-board");
         $winningScoreBoard.addClass("active animated tada");
@@ -92,4 +93,3 @@ var View = new (function () {
     };
     return view;
 }())();
-//# sourceMappingURL=othello.view.js.map

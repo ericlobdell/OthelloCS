@@ -252,8 +252,11 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="App\js\othello.ts" />
-    <TypeScriptCompile Include="App\js\othello.view.ts" />
+    <TypeScriptCompile Include="App\js\Domain.ts" />
+    <TypeScriptCompile Include="App\js\Match.ts" />
+    <TypeScriptCompile Include="App\js\Othello.service.ts" />
+    <TypeScriptCompile Include="App\js\Othello.ts" />
+    <TypeScriptCompile Include="App\js\Othello.view.ts" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
