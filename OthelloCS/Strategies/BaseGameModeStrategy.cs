@@ -1,6 +1,4 @@
-﻿using OthelloCS.Services;
-
-namespace OthelloCS.Strategies
+﻿namespace OthelloCS.Strategies
 {
     public class BaseGameModeStrategy
     {

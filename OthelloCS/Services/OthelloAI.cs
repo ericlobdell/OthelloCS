@@ -1,9 +1,6 @@
 ﻿using OthelloCS.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OthelloCS.Services
 {
@@ -26,8 +23,7 @@ namespace OthelloCS.Services
             return positions.OrderByDescending( p => p.PointValue ).First( );
         }
 
-        public static MoveSelection
- MakeMove(List<Cell> positions)
+        public static MoveSelection MakeMove(List<Cell> positions)
         {
             var cornerPositions = positions.Where( IsCorner ).ToList();
             var edgePositions = positions.Where( IsEdge ).ToList( );
@@ -35,7 +31,6 @@ namespace OthelloCS.Services
             if (cornerPositions.Any())
             {
                 return new MoveSelection
-
                 {
                     Position = GetHighestScoringPosition( cornerPositions ),
                     Criteria = MoveSelectionCriteria.CornerPositionAvailable
@@ -45,7 +40,6 @@ namespace OthelloCS.Services
             else if (edgePositions.Any())
             {
                 return new MoveSelection
-
                 {
                     Position = GetHighestScoringPosition( edgePositions ),
                     Criteria = MoveSelectionCriteria.EdgePositionAvailable
@@ -55,7 +49,6 @@ namespace OthelloCS.Services
             else
             {
                 return new MoveSelection
-
                 {
                     Position = GetHighestScoringPosition( positions ),
                     Criteria = MoveSelectionCriteria.HighestScoringPosition

@@ -2,9 +2,6 @@
 using OthelloCS.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace OthelloCS.Tests
@@ -12,7 +9,7 @@ namespace OthelloCS.Tests
     public class OthelloTests
     {
         [Fact]
-        public void IsCorner_true_when_corner()
+        public void IsCorner_true_when_corner( )
         {
             var position = new Cell { Row = 0, Column = 7 };
             Assert.True( OthelloAI.IsCorner( position ) );
@@ -40,7 +37,7 @@ namespace OthelloCS.Tests
         }
 
         [Fact]
-        public void GetHighestScoringPosition_returns_cell_with_highest_point_value()
+        public void GetHighestScoringPosition_returns_cell_with_highest_point_value( )
         {
             var positions = new List<Cell>
             {
@@ -58,13 +55,13 @@ namespace OthelloCS.Tests
         [Fact]
         public void GetHighestScoringPosition_throws_when_empty_list( )
         {
-            var positions = new List<Cell>();
+            var positions = new List<Cell>( );
 
-            var ex = Assert.Throws<InvalidOperationException>( () => OthelloAI.GetHighestScoringPosition( positions ) );
+            var ex = Assert.Throws<InvalidOperationException>( ( ) => OthelloAI.GetHighestScoringPosition( positions ) );
         }
 
         [Fact]
-        public void MakeMove_choses_corner_position_even_if_not_highest_scoring()
+        public void MakeMove_choses_corner_position_even_if_not_highest_scoring( )
         {
             var positions = new List<Cell>
             {
@@ -138,8 +135,8 @@ namespace OthelloCS.Tests
         {
             var positions = new List<Cell>
             {
-                new Cell { Row = 2, Column = 5, PointValue = 2 }, 
-                new Cell { Row = 4, Column = 3, PointValue = 1 }, 
+                new Cell { Row = 2, Column = 5, PointValue = 2 },
+                new Cell { Row = 4, Column = 3, PointValue = 1 },
                 new Cell { Row = 3, Column = 3, PointValue = 7 },
                 new Cell { Row = 6, Column = 4, PointValue = 5 }
             };
