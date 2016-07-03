@@ -1,7 +1,8 @@
 ﻿using OthelloCS.Interfaces;
+using OthelloCS.Models;
 using System;
 
-namespace OthelloCS.Models
+namespace OthelloCS.Strategies
 {
     public class SinglePlayerGameModeStrategy : IGameModeStrategy
     {

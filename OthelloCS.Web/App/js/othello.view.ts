@@ -87,10 +87,9 @@ const View = new class view {
 
     animateCapturedGamePieces( opponentCaptures: ICell[] ) {
         opponentCaptures
-            .filter( c => c.Distance > 0 )
             .map( c => c.Distance )
             .filter(( d, i, uniqueDistances ) =>
-                uniqueDistances.indexOf( d ) === i )
+                d > 0 && uniqueDistances.indexOf( d ) === i )
             .sort(( d1, d2 ) => d1 - d2 )
             .forEach(( d, i ) => {
                 setTimeout(() => {

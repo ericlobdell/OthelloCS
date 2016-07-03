@@ -1,9 +1,10 @@
 ﻿using OthelloCS.Interfaces;
+using OthelloCS.Models;
 using OthelloCS.Services;
 using System;
 using System.Linq;
 
-namespace OthelloCS.Models
+namespace OthelloCS.Strategies
 {
     public class TwoPlayerGameModeStrategy : BaseGameModeStrategy, IGameModeStrategy
     {
@@ -34,7 +35,7 @@ namespace OthelloCS.Models
                 if ( currentPlayerPotentialMoves.Any( ) )
                     gameBoardAfterMove = BoardManager.MapNextMoveTargets( currentPlayerPotentialMoves, gameBoardAfterMove );
                 else
-                    isEndOfMatch = true;
+                    isEndOfMatch = true; 
             }
                 
 

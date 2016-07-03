@@ -1,6 +1,7 @@
 ﻿using OthelloCS.Interfaces;
 using OthelloCS.Models;
 using OthelloCS.Services;
+using OthelloCS.Strategies;
 using OthelloCS.Web.Models;
 using System;
 using System.Collections.Generic;

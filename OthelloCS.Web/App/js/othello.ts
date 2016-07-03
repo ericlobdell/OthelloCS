@@ -55,7 +55,7 @@
 
                     View.updateScoreBoards( response.Players, response.Result.CurrentPlayer );
                     View.renderGameboard( response.Result.Gameboard );
-                    View.animateCapturedGamePieces( response.Result.Captures );
+                    View.animateCapturedGamePieces( response.Result.Captures ); 
                 }
             });
     }
