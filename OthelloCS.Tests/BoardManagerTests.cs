@@ -74,7 +74,6 @@ namespace OthelloCS.Tests
                 PointValue = 3,
                 Distance = 2,
                 PlayerNumber = 1
-
             };
 
             var sut = BoardManager.CopyCell( cell );
@@ -116,12 +115,13 @@ namespace OthelloCS.Tests
         public void ResetMoveRatings_sets_move_rating_properties_to_defaults( )
         {
             var gameBoard = new Gameboard( );
-            var cellWithValuesSet = new Cell { IsHighestScoring = true, IsHit = true, IsTarget = true };
+            var cellWithValuesSet = new Cell { IsHighestScoring = true, IsHit = true, IsTarget = true, Distance = 2 };
             gameBoard.Positions [ 1 ] [ 1 ] = cellWithValuesSet;
 
             Assert.True( BoardManager.GetFlatGameboard( gameBoard ).Any( c => c.IsTarget ) );
             Assert.True( BoardManager.GetFlatGameboard( gameBoard ).Any( c => c.IsHit ) );
             Assert.True( BoardManager.GetFlatGameboard( gameBoard ).Any( c => c.IsHighestScoring ) );
+            Assert.True( BoardManager.GetFlatGameboard( gameBoard ).Any( c => c.Distance > 0 ) );
 
             var sut = BoardManager.ResetMoveRatings( gameBoard );
 
@@ -130,6 +130,7 @@ namespace OthelloCS.Tests
             Assert.False( BoardManager.GetFlatGameboard( sut ).Any( c => c.IsTarget ) );
             Assert.False( BoardManager.GetFlatGameboard( sut ).Any( c => c.IsHit ) );
             Assert.False( BoardManager.GetFlatGameboard( sut ).Any( c => c.IsHighestScoring ) );
+            Assert.False( BoardManager.GetFlatGameboard( sut ).Any( c => c.Distance > 0 ) );
         }
 
         [Theory]

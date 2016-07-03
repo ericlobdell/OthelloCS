@@ -56,12 +56,15 @@ var View = new (function () {
     };
     view.prototype.animateCapturedGamePieces = function (opponentCaptures) {
         opponentCaptures
+            .filter(function (c) { return c.Distance > 0; })
             .map(function (c) { return c.Distance; })
-            .filter(function (d, i, uniqueDistances) { return uniqueDistances.indexOf(d) === i; })
+            .filter(function (d, i, uniqueDistances) {
+            return uniqueDistances.indexOf(d) === i;
+        })
             .sort(function (d1, d2) { return d1 - d2; })
             .forEach(function (d, i) {
             setTimeout(function () {
-                $("[data-distance='" + d + "'] .player-game-piece")
+                $("[data-distance=\"" + d + "\"] .player-game-piece")
                     .addClass("animated-fast pulse");
             }, 75 * i);
         });

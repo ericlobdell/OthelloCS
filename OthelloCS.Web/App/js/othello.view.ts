@@ -87,12 +87,14 @@ const View = new class view {
 
     animateCapturedGamePieces( opponentCaptures: ICell[] ) {
         opponentCaptures
+            .filter( c => c.Distance > 0 )
             .map( c => c.Distance )
-            .filter(( d, i, uniqueDistances ) => uniqueDistances.indexOf( d ) === i )
+            .filter(( d, i, uniqueDistances ) =>
+                uniqueDistances.indexOf( d ) === i )
             .sort(( d1, d2 ) => d1 - d2 )
             .forEach(( d, i ) => {
                 setTimeout(() => {
-                    $( `[data-distance='${d}'] .player-game-piece` )
+                    $( `[data-distance="${d}"] .player-game-piece` )
                         .addClass( `animated-fast pulse` );
                 }, 75 * i );
             });

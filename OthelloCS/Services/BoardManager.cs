@@ -45,6 +45,7 @@ namespace OthelloCS.Services
                     cell.IsHighestScoring = false;
                     cell.IsHit = false;
                     cell.IsTarget = false;
+                    cell.Distance = 0;
 
                     gameBoardCopy.Positions [ cell.Row ] [ cell.Column ] = cell;
                 } );
