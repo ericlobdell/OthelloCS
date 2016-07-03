@@ -22,25 +22,24 @@ namespace OthelloCS.Services
 
         public static Gameboard ResetTargetPositions( Gameboard gameBoard )
         {
-            var gameBoardCopy = Gameboard.Empty;
+            var gameBoardCopy = CopyGameboard(gameBoard);
 
-            gameBoard.Positions.ForEach( row =>
-                row.ForEach( cell =>
+            GetFlatGameboard( gameBoardCopy )
+                .ForEach( cell =>
                 {
-                    var copy = CopyCell( cell );
-                    copy.IsTarget = false;
+                    cell.IsTarget = false;
 
-                    gameBoardCopy.Positions [ cell.Row ] [ cell.Column ] = copy;
-                } ) );
+                    gameBoardCopy.Positions [ cell.Row ] [ cell.Column ] = cell;
+                } );
 
             return gameBoardCopy;
         }
 
         public static Gameboard ResetMoveRatings( Gameboard gameBoard )
         {
-            var gameBoardCopy = Gameboard.Empty;
+            var gameBoardCopy = CopyGameboard( gameBoard );
 
-            GetFlatGameboard( gameBoard )
+            GetFlatGameboard( gameBoardCopy )
                 .ForEach( cell =>
                 {
                     cell.IsHighestScoring = false;
@@ -53,7 +52,7 @@ namespace OthelloCS.Services
             return gameBoardCopy;
         }
 
-        private static Gameboard CopyGameboard( Gameboard gameBoard )
+        public static Gameboard CopyGameboard( Gameboard gameBoard )
         {
             var gameBoardCopy = Gameboard.Empty;
 
@@ -75,7 +74,7 @@ namespace OthelloCS.Services
         {
             var gameBoardCopy = CopyGameboard( gameBoard );
 
-            gameBoardCopy.Positions [ move.Row ] [ move.Column ].PlayerNumber = move.PlayerNumber;
+            move.Captures.Add( gameBoardCopy.Positions [ move.Row ] [ move.Column ] );
 
             move.Captures.ForEach( cell =>
             {
@@ -89,20 +88,21 @@ namespace OthelloCS.Services
             return gameBoardCopy;
         }
 
-        public static Gameboard MapNextMoves( List<Cell> moves, Gameboard gameBoard )
+        public static Gameboard MapNextMoveTargets( List<Cell> moves, Gameboard gameBoard )
         {
-            var resetGameBoard = ResetMoveRatings( gameBoard );
+            var gameBoardCopy = CopyGameboard( gameBoard );
 
             moves.ForEach( move =>
-                resetGameBoard.Positions [ move.Row ] [ move.Column ] = move );
+                gameBoardCopy.Positions [ move.Row ] [ move.Column ] = move );
 
-            return resetGameBoard;
+            return gameBoardCopy;
         }
 
         public static List<Cell> GetPlayerCells( int playerNumber, Gameboard gameBoard )
         {
             return GetFlatGameboard( gameBoard )
                 .Where( c => c.PlayerNumber == playerNumber )
+                .Select( CopyCell )
                 .ToList( );
         }
 
@@ -110,7 +110,7 @@ namespace OthelloCS.Services
         {
             return gameBoard.Positions
                 .SelectMany( row =>
-                    row.Select( CopyCell ) )
+                    row.Select( c => c ) )
                        .ToList( );
         }
 

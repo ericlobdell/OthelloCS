@@ -25,9 +25,10 @@ namespace OthelloCS.Services
             };
         }
 
-        public static Move MakeMove( int startingRow, int startingColumn, int playerNumber, Gameboard gameBoard )
+        public static List<Cell> GetMoveCaptures(int startingRow, int startingColumn, int playerNumber, Gameboard gameBoard )
         {
-            var move = new Move( startingRow, startingColumn, playerNumber );
+            var gameBoardCopy = BoardManager.CopyGameboard( gameBoard );
+            var captures = new List<Cell>( );
 
             for ( int rowIncrement = -1; rowIncrement <= 1; rowIncrement++ )
             {
@@ -36,20 +37,20 @@ namespace OthelloCS.Services
                     if ( rowIncrement == 0 && columnIncerment == 0 )
                         continue;
                     else
-                        move.Captures.AddRange( 
+                        captures.AddRange( 
                             GetDirectionalCaptures( 
                                 startingRow + rowIncrement,
                                 startingColumn + columnIncerment, 
                                 rowIncrement, 
                                 columnIncerment, 
                                 playerNumber, 
-                                gameBoard 
+                                gameBoardCopy
                             ) 
                         );
                 }
             }
 
-            return move;
+            return captures;
         }
 
         public static List<Cell> GetDirectionalCaptures( int row, int col, int rowIncrement, int columnIncrement, int playerNumber, Gameboard gameBoard )
@@ -83,7 +84,7 @@ namespace OthelloCS.Services
         public static List<Cell> GetNextMovesForPlayer( int playerNumber, Gameboard gameBoard )
         {
             var potentialNextMoves = new List<Cell>( );
-            var highestScoringMove = 0;
+            var highestMoveScore = 0;
             var opponent = playerNumber == 1 ? 2 : 1;
 
             BoardManager.GetPlayerCells( opponent, gameBoard )
@@ -92,23 +93,24 @@ namespace OthelloCS.Services
                     BoardManager.GetOpenAdjacentCells( opponentCell, gameBoard )
                         .ForEach( adjacentCell =>
                         {
-                            var move = MakeMove( adjacentCell.Row, adjacentCell.Column, playerNumber, gameBoard );
+                            var captures = GetMoveCaptures( adjacentCell.Row, adjacentCell.Column, playerNumber, gameBoard );
+                            var pointsEarned = captures.Count;
 
-                            if ( move.IsScoringMove )
+                            if ( pointsEarned > 0 )
                             {
                                 adjacentCell.IsTarget = true;
-                                adjacentCell.PointValue = move.PointValue;
+                                adjacentCell.PointValue = pointsEarned;
                                 potentialNextMoves.Add( adjacentCell );
                             }
 
-                            highestScoringMove = move.PointValue > highestScoringMove ? move.PointValue : highestScoringMove;
+                            highestMoveScore = pointsEarned > highestMoveScore ? pointsEarned : highestMoveScore;
 
                         } );
 
                 } );
 
             potentialNextMoves.ForEach( position =>
-                position.IsHighestScoring = position.PointValue == highestScoringMove );
+                position.IsHighestScoring = position.PointValue == highestMoveScore );
 
             return potentialNextMoves;
         }

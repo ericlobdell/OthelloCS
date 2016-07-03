@@ -62,7 +62,7 @@ const View = new class view {
 
     }
 
-    renderGameboard( gameBoard: IGameboard, opponentCaptures: ICell[] ) {
+    renderGameboard( gameBoard: IGameboard ) {
         let html = "";
 
         gameBoard.Positions
@@ -83,7 +83,9 @@ const View = new class view {
             });
 
         $( ".game-board" ).html( html );
+    }
 
+    animateCapturedGamePieces( opponentCaptures: ICell[] ) {
         opponentCaptures
             .map( c => c.Distance )
             .filter(( d, i, uniqueDistances ) => uniqueDistances.indexOf( d ) === i )

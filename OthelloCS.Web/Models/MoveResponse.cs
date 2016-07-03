@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using OthelloCS.Models;
+using System.Collections.Generic;
 
-namespace OthelloCS.Models
+namespace OthelloCS.Web.Models
 {
     public class MoveResponse
     {

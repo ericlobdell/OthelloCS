@@ -11,6 +11,8 @@ namespace OthelloCS.Models
         public int PointValue { get { return Captures.Count; } }
         public bool IsScoringMove { get { return PointValue > 0; } }
 
+        public Move( ) { }
+
         public Move( int row, int col, int playerNumber )
         {
             Row = row;

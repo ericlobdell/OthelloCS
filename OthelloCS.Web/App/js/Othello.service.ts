@@ -8,7 +8,7 @@
         return this.post( "/api/othello/move", req );
     }
 
-    post( url, data ) {
+    private post = ( url, data ) => {
         return $.ajax( {
             type: 'POST',
             url: url,

@@ -1,6 +1,7 @@
 ﻿using OthelloCS.Interfaces;
 using OthelloCS.Models;
 using OthelloCS.Services;
+using OthelloCS.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Web.Http;
@@ -32,10 +33,11 @@ namespace OthelloCS.Web.Controllers
         public MoveResponse PostMove( MoveRequest moveRequest )
         {
             var strategy = ResolveGameModeStrategy( moveRequest.GameMode );
-            var moveResult = strategy.OnMove( moveRequest );
+            var move = new Move( moveRequest.Row, moveRequest.Column, moveRequest.PlayerNumber );
+            var moveResult = strategy.OnMove( move, moveRequest.MatchId, moveRequest.Gameboard );
 
-            moveRequest.Players.ForEach( p => p.Score =
-                ScoreKeeper.GetScoreForPlayer( p.Number, moveResult.Gameboard )
+            moveRequest.Players.ForEach( p => 
+                p.Score = ScoreKeeper.GetScoreForPlayer( p.Number, moveResult.Gameboard )
             );
 
             return new MoveResponse

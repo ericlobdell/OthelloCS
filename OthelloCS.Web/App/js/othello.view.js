@@ -42,7 +42,7 @@ var View = new (function () {
             });
         });
     }
-    view.prototype.renderGameboard = function (gameBoard, opponentCaptures) {
+    view.prototype.renderGameboard = function (gameBoard) {
         var html = "";
         gameBoard.Positions
             .forEach(function (row) {
@@ -53,6 +53,8 @@ var View = new (function () {
             });
         });
         $(".game-board").html(html);
+    };
+    view.prototype.animateCapturedGamePieces = function (opponentCaptures) {
         opponentCaptures
             .map(function (c) { return c.Distance; })
             .filter(function (d, i, uniqueDistances) { return uniqueDistances.indexOf(d) === i; })
@@ -96,3 +98,4 @@ var View = new (function () {
     };
     return view;
 }())();
+//# sourceMappingURL=Othello.view.js.map

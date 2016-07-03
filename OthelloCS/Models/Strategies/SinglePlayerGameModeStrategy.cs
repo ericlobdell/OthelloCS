@@ -11,7 +11,7 @@ namespace OthelloCS.Models
             throw new NotImplementedException( );
         }
 
-        public MoveResult OnMove( MoveRequest action )
+        public MoveResult OnMove( Move move, Guid matchId, Gameboard gameBoard )
         {
             throw new NotImplementedException( );
         }

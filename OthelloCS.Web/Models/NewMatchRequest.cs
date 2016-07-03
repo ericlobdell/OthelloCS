@@ -1,4 +1,6 @@
-﻿namespace OthelloCS.Models
+﻿using OthelloCS.Models;
+
+namespace OthelloCS.Web.Models
 {
     public class NewMatchRequest
     {

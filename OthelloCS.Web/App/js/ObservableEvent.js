@@ -14,3 +14,4 @@ var ObservableEvent = (function () {
     };
     return ObservableEvent;
 }());
+//# sourceMappingURL=ObservableEvent.js.map

@@ -1,7 +1,8 @@
-﻿using System;
+﻿using OthelloCS.Models;
+using System;
 using System.Collections.Generic;
 
-namespace OthelloCS.Models
+namespace OthelloCS.Web.Models
 {
     public class MoveRequest
     {

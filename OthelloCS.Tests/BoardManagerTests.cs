@@ -9,7 +9,7 @@ namespace OthelloCS.Tests
     public class BoardManagerTests
     {
         [Theory]
-        [InlineData(-1,3,false)]
+        [InlineData( -1, 3, false )]
         [InlineData( 1, 3, true )]
         [InlineData( 1, 8, false )]
         [InlineData( 8, 3, false )]
@@ -23,7 +23,7 @@ namespace OthelloCS.Tests
         }
 
         [Fact]
-        public void TyrGetCell_returns_copy_of_Cell_if_valid_move()
+        public void TyrGetCell_returns_copy_of_Cell_if_valid_move( )
         {
             var gameBoard = new Gameboard( );
             var sut = BoardManager.TryGetCell( 2, 3, gameBoard );
@@ -33,7 +33,6 @@ namespace OthelloCS.Tests
             Assert.Equal( expected.Row, sut.Row );
             Assert.Equal( expected.Column, sut.Column );
             Assert.NotSame( expected, sut );
-
         }
 
         [Fact]
@@ -46,7 +45,7 @@ namespace OthelloCS.Tests
         }
 
         [Fact]
-        public void GetFlatGameboard_returns_positions_as_flat_list()
+        public void GetFlatGameboard_returns_positions_as_flat_list( )
         {
             var gameBoard = new Gameboard( );
             var expected = new List<Cell>( );
@@ -63,19 +62,19 @@ namespace OthelloCS.Tests
         }
 
         [Fact]
-        public void CopyCell_returns_copy_of_Cell()
+        public void CopyCell_returns_copy_of_Cell( )
         {
             var cell = new Cell
             {
                 Row = 1,
                 Column = 2,
                 IsTarget = true,
-                IsHighestScoring = false, 
+                IsHighestScoring = false,
                 IsHit = true,
                 PointValue = 3,
                 Distance = 2,
                 PlayerNumber = 1
-                
+
             };
 
             var sut = BoardManager.CopyCell( cell );
@@ -89,23 +88,6 @@ namespace OthelloCS.Tests
             Assert.Equal( sut.PlayerNumber, cell.PlayerNumber );
             Assert.Equal( sut.Distance, cell.Distance );
             Assert.Equal( sut.PointValue, cell.PointValue );
-        }
-
-        [Fact]
-        public void GetFlatGameboard_returns_copies_of_Cells_not_references( )
-        {
-            var gameBoard = new Gameboard( );
-            var expected = new List<Cell>( );
-
-            gameBoard.Positions.ForEach( row =>
-            {
-                row.ForEach( cell => expected.Add( cell ) );
-            } );
-
-            var sut = BoardManager.GetFlatGameboard( gameBoard );
-
-            sut.ForEach( cell => 
-                Assert.NotSame( cell, gameBoard.Positions [ cell.Row ] [ cell.Column ] ) );
         }
 
         [Fact]
@@ -151,7 +133,7 @@ namespace OthelloCS.Tests
         }
 
         [Theory]
-        [InlineData(2,3,true)] // -1, 0 - above
+        [InlineData( 2, 3, true )] // -1, 0 - above
         [InlineData( 4, 3, true )] // +1, 0 - below
         [InlineData( 2, 2, true )] // -1, -1 = above left
         [InlineData( 4, 2, true )] // +1, -1 = below left
@@ -195,7 +177,7 @@ namespace OthelloCS.Tests
         }
 
         [Fact]
-        public void GetOpenAdjacentCells_returns_only_unoccupied_cells()
+        public void GetOpenAdjacentCells_returns_only_unoccupied_cells( )
         {
             var gameBoard = new Gameboard( );
             var testCell = gameBoard.Positions [ 3 ] [ 3 ];
@@ -206,7 +188,7 @@ namespace OthelloCS.Tests
         }
 
         [Fact]
-        public void RecordMove_maps_captured_positions_to_gameboard()
+        public void RecordMove_maps_captured_positions_to_gameboard( )
         {
             var gameBoard = new Gameboard( );
             var currentPlayerNumber = 1;
@@ -245,8 +227,50 @@ namespace OthelloCS.Tests
             Assert.Equal( 3, sut2 );
 
             var sut3 = BoardManager.GetPositionDistance( move, 4, 4 );
-            Assert.Equal( 3, sut2 );
+            Assert.Equal( 3, sut3 );
 
+        }
+
+        [Fact]
+        public void MapNextMoves_returns_gameboard_with_next_moves_marked( )
+        {
+            var moves = new List<Cell>
+            {
+                new Cell { IsTarget = true, Row = 0, Column = 3 },
+                new Cell { IsTarget = true, Row = 0, Column = 4 },
+                new Cell { IsTarget = true, Row = 0, Column = 5 },
+            };
+
+            var gameBoard = new Gameboard( );
+
+            moves.ForEach( move =>
+                Assert.False( gameBoard.Positions [ move.Row ] [ move.Column ].IsTarget ) );
+
+            var gameBoardAfterMapping = BoardManager.MapNextMoveTargets( moves, gameBoard );
+
+            moves.ForEach( move =>
+                Assert.True( gameBoardAfterMapping.Positions [ move.Row ] [ move.Column ].IsTarget ) );
+        }
+
+        [Fact]
+        public void MapNextMoves_doesnt_modify_original_gameboard( )
+        {
+            var moves = new List<Cell>
+            {
+                new Cell { IsTarget = true, Row = 0, Column = 3 },
+                new Cell { IsTarget = true, Row = 0, Column = 4 },
+                new Cell { IsTarget = true, Row = 0, Column = 5 },
+            };
+
+            var gameBoard = new Gameboard( );
+
+            moves.ForEach( move =>
+                Assert.False( gameBoard.Positions [ move.Row ] [ move.Column ].IsTarget ) );
+
+            var gameBoardAfterMapping = BoardManager.MapNextMoveTargets( moves, gameBoard );
+
+            moves.ForEach( move =>
+                 Assert.False( gameBoard.Positions [ move.Row ] [ move.Column ].IsTarget ) );
         }
     }
 }

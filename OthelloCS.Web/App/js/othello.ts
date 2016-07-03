@@ -26,7 +26,7 @@
                 this.match.Players = response.Players
 
                 View.updateScoreBoards( response.Players, response.CurrentPlayer );
-                View.renderGameboard( response.Gameboard, [] );
+                View.renderGameboard( response.Gameboard );
             });
     }
 
@@ -54,7 +54,8 @@
                     this.match.Gameboard = response.Result.Gameboard;
 
                     View.updateScoreBoards( response.Players, response.Result.CurrentPlayer );
-                    View.renderGameboard( response.Result.Gameboard, response.Result.Captures );
+                    View.renderGameboard( response.Result.Gameboard );
+                    View.animateCapturedGamePieces( response.Result.Captures );
                 }
             });
     }

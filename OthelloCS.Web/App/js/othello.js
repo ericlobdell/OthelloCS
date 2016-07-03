@@ -15,7 +15,7 @@ var Othello = new (function () {
                 _this.match.Gameboard = response.Gameboard;
                 _this.match.Players = response.Players;
                 View.updateScoreBoards(response.Players, response.CurrentPlayer);
-                View.renderGameboard(response.Gameboard, []);
+                View.renderGameboard(response.Gameboard);
             });
         };
         this.onMove = function (moveArgs) {
@@ -38,7 +38,8 @@ var Othello = new (function () {
                     _this.match.CurrentPlayer = response.Result.CurrentPlayer;
                     _this.match.Gameboard = response.Result.Gameboard;
                     View.updateScoreBoards(response.Players, response.Result.CurrentPlayer);
-                    View.renderGameboard(response.Result.Gameboard, response.Result.Captures);
+                    View.renderGameboard(response.Result.Gameboard);
+                    View.animateCapturedGamePieces(response.Result.Captures);
                 }
             });
         };
@@ -48,3 +49,4 @@ var Othello = new (function () {
     }
     return othello;
 }());
+//# sourceMappingURL=Othello.js.map
