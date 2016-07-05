@@ -56,25 +56,22 @@
                     this.match.Gameboard = result.Gameboard;
 
                     if ( result.ComputerMadeMove ) {
-                        console.log( "Computer made move: ", result.ComputerMove );
-                        console.log( "Move criteria: " + result.Criteria );
                         const moveMessage = `Othello is taking position (${result.ComputerMove.Row},${result.ComputerMove.Column}), based on ${result.Criteria}`;
-
                         let self = this;
+
+                        console.log( moveMessage );
                         setTimeout( function () {
-                            console.log( moveMessage );
                             self.onMove( {
                                 Row: result.ComputerMove.Row,
                                 Column: result.ComputerMove.Column
                             });
-                        }, 2000);
-                        
-                    }   
-                    else {
-                        View.updateScoreBoards( response.Players, result.CurrentPlayer );
-                        View.renderGameboard( result.Gameboard );
-                        View.animateCapturedGamePieces( result.Captures ); 
-                    }
+                        }, 200);
+                    }  
+
+                    View.updateScoreBoards( response.Players, result.CurrentPlayer );
+                    View.renderGameboard( result.Gameboard );
+                    View.animateCapturedGamePieces( result.Captures ); 
+                    
                 }
 
             });

@@ -87,6 +87,7 @@ var View = new (function () {
     };
     view.prototype.announceWinner = function (winner) {
         var $winningScoreBoard;
+        console.log("WINNER!", winner);
         if (winner)
             $winningScoreBoard = $(".score-board.player-" + winner.Number);
         else

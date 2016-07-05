@@ -39,23 +39,19 @@ var Othello = new (function () {
                     _this.match.CurrentPlayer = result.CurrentPlayer;
                     _this.match.Gameboard = result.Gameboard;
                     if (result.ComputerMadeMove) {
-                        console.log("Computer made move: ", result.ComputerMove);
-                        console.log("Move criteria: " + result.Criteria);
-                        var moveMessage_1 = "Othello is taking position (" + result.ComputerMove.Row + "," + result.ComputerMove.Column + "), based on " + result.Criteria;
+                        var moveMessage = "Othello is taking position (" + result.ComputerMove.Row + "," + result.ComputerMove.Column + "), based on " + result.Criteria;
                         var self_1 = _this;
+                        console.log(moveMessage);
                         setTimeout(function () {
-                            console.log(moveMessage_1);
                             self_1.onMove({
                                 Row: result.ComputerMove.Row,
                                 Column: result.ComputerMove.Column
                             });
-                        }, 2000);
+                        }, 200);
                     }
-                    else {
-                        View.updateScoreBoards(response.Players, result.CurrentPlayer);
-                        View.renderGameboard(result.Gameboard);
-                        View.animateCapturedGamePieces(result.Captures);
-                    }
+                    View.updateScoreBoards(response.Players, result.CurrentPlayer);
+                    View.renderGameboard(result.Gameboard);
+                    View.animateCapturedGamePieces(result.Captures);
                 }
             });
         };

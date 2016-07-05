@@ -61,7 +61,6 @@ namespace OthelloCS.Strategies
                 else
                 {
                     isEndOfMatch = true;
-                   // HandleEndOfGame( );
                 }
                     
             }

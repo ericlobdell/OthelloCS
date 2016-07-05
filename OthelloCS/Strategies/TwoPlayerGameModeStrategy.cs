@@ -35,7 +35,10 @@ namespace OthelloCS.Strategies
                 if ( currentPlayerPotentialMoves.Any( ) )
                     gameBoardAfterMove = BoardManager.MapNextMoveTargets( currentPlayerPotentialMoves, gameBoardAfterMove );
                 else
-                    isEndOfMatch = true; 
+                {
+                    isEndOfMatch = true;
+                }
+                    
             }
 
             return new MoveResult

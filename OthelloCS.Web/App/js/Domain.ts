@@ -51,7 +51,7 @@ interface IMoveRequest {
 
 interface IMoveResponse {
     Result: IMoveResult,
-    Players: IPlayer[]
+    Players: IPlayer[],
     Winner: IPlayer
 }
 
@@ -63,5 +63,6 @@ interface IMoveResult {
     IsEndOfMatch: boolean,
     ComputerMadeMove: boolean,
     ComputerMove: IMoveArguments,
-    Criteria: string
+    Criteria: string,
+    WinningPlayerNumber: number
 }

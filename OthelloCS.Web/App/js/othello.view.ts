@@ -124,6 +124,8 @@ const View = new class view {
     announceWinner( winner: IPlayer ) {
         let $winningScoreBoard;
 
+        console.log( "WINNER!", winner );
+
         if ( winner )
             $winningScoreBoard = $( `.score-board.player-${winner.Number}` );
         else

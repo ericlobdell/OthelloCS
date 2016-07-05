@@ -14,6 +14,19 @@ namespace OthelloCS.Services
                 .Count( );
         }
 
+        public static int GetWinningPlayerNumber(Gameboard gameBoard)
+        {
+            var positions = BoardManager.GetFlatGameboard( gameBoard );
+            var playerOneScore = positions.Where( p => p.PlayerNumber == 1 ).Count();
+            var playerTwoScore = positions.Where( p => p.PlayerNumber == 2 ).Count();
+
+            if ( playerOneScore == playerTwoScore )
+                return 0;
+            else
+                return playerOneScore > playerTwoScore ? 1 : 2;
+
+        }
+
 
         public static CellEvaluationResult EvaluateCell( Cell cell, int currentPlayerNumber )
         {
