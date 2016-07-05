@@ -25,8 +25,13 @@ namespace OthelloCS.Services
 
         public static MoveSelection MakeMove(List<Cell> positions)
         {
-            var cornerPositions = positions.Where( IsCorner ).ToList();
-            var edgePositions = positions.Where( IsEdge ).ToList( );
+            var cornerPositions = positions
+                .Where( IsCorner )
+                .ToList();
+
+            var edgePositions = positions
+                .Where( IsEdge )
+                .ToList( );
 
             if (cornerPositions.Any())
             {

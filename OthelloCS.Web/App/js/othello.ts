@@ -46,17 +46,37 @@
             .then(( response: IMoveResponse ) => {
                 console.log( "MOVE SUCCESS: ", response );
 
-                if ( response.IsEndOfGame ) {
-                    View.announceWinner( response.Winner )
-                }
-                else {
-                    this.match.CurrentPlayer = response.Result.CurrentPlayer;
-                    this.match.Gameboard = response.Result.Gameboard;
+                const result = response.Result;
 
-                    View.updateScoreBoards( response.Players, response.Result.CurrentPlayer );
-                    View.renderGameboard( response.Result.Gameboard );
-                    View.animateCapturedGamePieces( response.Result.Captures ); 
+                if ( result.IsEndOfMatch ) {
+                    View.announceWinner( response.Winner );
                 }
+                else  {
+                    this.match.CurrentPlayer = result.CurrentPlayer;
+                    this.match.Gameboard = result.Gameboard;
+
+                    if ( result.ComputerMadeMove ) {
+                        console.log( "Computer made move: ", result.ComputerMove );
+                        console.log( "Move criteria: " + result.Criteria );
+                        const moveMessage = `Othello is taking position (${result.ComputerMove.Row},${result.ComputerMove.Column}), based on ${result.Criteria}`;
+
+                        let self = this;
+                        setTimeout( function () {
+                            console.log( moveMessage );
+                            self.onMove( {
+                                Row: result.ComputerMove.Row,
+                                Column: result.ComputerMove.Column
+                            });
+                        }, 2000);
+                        
+                    }   
+                    else {
+                        View.updateScoreBoards( response.Players, result.CurrentPlayer );
+                        View.renderGameboard( result.Gameboard );
+                        View.animateCapturedGamePieces( result.Captures ); 
+                    }
+                }
+
             });
     }
 }

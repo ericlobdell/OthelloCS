@@ -5,6 +5,7 @@ using OthelloCS.Strategies;
 using OthelloCS.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 
 namespace OthelloCS.Web.Controllers
@@ -41,24 +42,27 @@ namespace OthelloCS.Web.Controllers
                 p.Score = ScoreKeeper.GetScoreForPlayer( p.Number, moveResult.Gameboard )
             );
 
-            return new MoveResponse
+            var response = new MoveResponse
             {
                 Result = moveResult,
-                Players = moveRequest.Players,
-                IsEndOfGame = false
+                Players = moveRequest.Players
             };
+
+            if ( moveResult.IsEndOfMatch )
+                response.Winner = moveRequest
+                    .Players
+                    .OrderByDescending( p => p.Score )
+                    .First( );
+
+            return response;
         }
 
         private IGameModeStrategy ResolveGameModeStrategy( GameMode gameMode )
         {
-
-            //if ( gameMode == GameMode.OnePlayer )
-            //{
-            //    return new SinglePlayerGameModeStrategy( );
-            //}
-
-            return new TwoPlayerGameModeStrategy( );
-
+            if ( gameMode == GameMode.OnePlayer )
+                return new SinglePlayerGameModeStrategy( );
+            else
+                return new TwoPlayerGameModeStrategy( );
         }
     }
 

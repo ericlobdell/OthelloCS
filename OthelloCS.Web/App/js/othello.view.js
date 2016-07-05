@@ -100,4 +100,3 @@ var View = new (function () {
     };
     return view;
 }())();
-//# sourceMappingURL=Othello.view.js.map

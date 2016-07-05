@@ -31,15 +31,31 @@ var Othello = new (function () {
             Service.getMoveResult(moveRequest)
                 .then(function (response) {
                 console.log("MOVE SUCCESS: ", response);
-                if (response.IsEndOfGame) {
+                var result = response.Result;
+                if (result.IsEndOfMatch) {
                     View.announceWinner(response.Winner);
                 }
                 else {
-                    _this.match.CurrentPlayer = response.Result.CurrentPlayer;
-                    _this.match.Gameboard = response.Result.Gameboard;
-                    View.updateScoreBoards(response.Players, response.Result.CurrentPlayer);
-                    View.renderGameboard(response.Result.Gameboard);
-                    View.animateCapturedGamePieces(response.Result.Captures);
+                    _this.match.CurrentPlayer = result.CurrentPlayer;
+                    _this.match.Gameboard = result.Gameboard;
+                    if (result.ComputerMadeMove) {
+                        console.log("Computer made move: ", result.ComputerMove);
+                        console.log("Move criteria: " + result.Criteria);
+                        var moveMessage_1 = "Othello is taking position (" + result.ComputerMove.Row + "," + result.ComputerMove.Column + "), based on " + result.Criteria;
+                        var self_1 = _this;
+                        setTimeout(function () {
+                            console.log(moveMessage_1);
+                            self_1.onMove({
+                                Row: result.ComputerMove.Row,
+                                Column: result.ComputerMove.Column
+                            });
+                        }, 2000);
+                    }
+                    else {
+                        View.updateScoreBoards(response.Players, result.CurrentPlayer);
+                        View.renderGameboard(result.Gameboard);
+                        View.animateCapturedGamePieces(result.Captures);
+                    }
                 }
             });
         };
@@ -49,4 +65,3 @@ var Othello = new (function () {
     }
     return othello;
 }());
-//# sourceMappingURL=Othello.js.map

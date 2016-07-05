@@ -17,4 +17,3 @@ var Service = new (function () {
     };
     return service;
 }());
-//# sourceMappingURL=Othello.service.js.map

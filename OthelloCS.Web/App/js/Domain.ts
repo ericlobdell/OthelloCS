@@ -36,8 +36,7 @@ interface INewMatchResponse {
 
 interface IMoveArguments {
     Row: number,
-    Column: number,
-    IsHighScoring: boolean
+    Column: number
 }
 
 interface IMoveRequest {
@@ -52,8 +51,7 @@ interface IMoveRequest {
 
 interface IMoveResponse {
     Result: IMoveResult,
-    Players: IPlayer[],
-    IsEndOfGame: boolean
+    Players: IPlayer[]
     Winner: IPlayer
 }
 
@@ -61,5 +59,9 @@ interface IMoveResult {
     CurrentPlayer: number,
     Gameboard: IGameboard,
     MatchId: string,
-    Captures: ICell[]
+    Captures: ICell[],
+    IsEndOfMatch: boolean,
+    ComputerMadeMove: boolean,
+    ComputerMove: IMoveArguments,
+    Criteria: string
 }

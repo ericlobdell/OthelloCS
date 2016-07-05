@@ -4,4 +4,3 @@ var Match = (function () {
     }
     return Match;
 }());
-//# sourceMappingURL=Match.js.map

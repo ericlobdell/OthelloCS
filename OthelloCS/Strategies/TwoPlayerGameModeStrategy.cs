@@ -37,9 +37,16 @@ namespace OthelloCS.Strategies
                 else
                     isEndOfMatch = true; 
             }
-                
 
-            return new MoveResult( nextPlayerNumber, gameBoardAfterMove, matchId, move.Captures, isEndOfMatch );
+            return new MoveResult
+            {
+                CurrentPlayer = nextPlayerNumber,
+                Gameboard = gameBoardAfterMove,
+                MatchId = matchId,
+                Captures = move.Captures,
+                IsEndOfMatch = isEndOfMatch
+            };
+
         }
     }
 }
